@@ -1,31 +1,29 @@
+
 #include "String.h"
 #include <iostream>
 
 int main()
 {
-	String string1("Yo World");
-
-	String string2(string1);
-
-
+	String string1("Hello World");
+	char test[16] = "Hello Universe";
+	String string2("Hello Galaxy");
 	String string3(string1);
 
-		bool result = string1.EqualTo(string2);
-		if (result == true)
-		{
-			std::cout << "The strings are the same" << std::endl;
-		}
-		else
-		{
-			std::cout << "The strings are not the same" << std::endl;
-		}
+	std::cout << string1.Cstr() << std::endl;
+	std::cout << string1.Prepend(string2) << std::endl;
 
-		std::cout << string1.Length() << " | " << string2.Length() << std::endl;
+	bool result = string1.EqualTo(string3);
+
+	if (result == true)
+	{
+		std::cout << "They are the same" << std::endl;
+	}
+	else
+	{
+		std::cout << "They are different" << std::endl;
+	}
 
 
-
-		std::cout << string1.Cstr() << " | " << string2.Cstr() << std::endl;
-
-		return 0;
+	return 0;
 
 }
