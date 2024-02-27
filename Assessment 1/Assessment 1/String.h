@@ -3,16 +3,15 @@
 class String
 {
 private:
-
 	//declaring a character pointer
 	char* m_string;
-
-
 public:
 	String();
 	String(const char* c);
 	String(String& st);
 	~String();
+
+	int Length();
 
 	/*int Length();
 	bool EqualTo(const char* c);
@@ -21,12 +20,6 @@ public:
 	void Append(String* st);
 	void Prepend(const char* c);
 	void Prepend(String* st);*/
-
-
-
-
-
-
 
 };
 
