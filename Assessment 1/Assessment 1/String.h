@@ -12,9 +12,17 @@ public:
 	~String();
 
 	int Length();
+	bool EqualTo(const char* c);
+	bool EqualTo(String& st);
+	const char* Cstr();
 
 	/*int Length();
 	bool EqualTo(const char* c);
+	bool EqualTo(String& st);
+	const char* Cstr();
+
+
+	 bool EqualTo(const char* c);
 	bool EqualTo(String* st);
 	void Append(const char* c);
 	void Append(String* st);
