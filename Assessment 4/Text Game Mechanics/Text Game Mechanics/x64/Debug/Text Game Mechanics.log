@@ -1,0 +1,7 @@
+﻿  TimeTests.cpp
+C:\Users\s231256\OneDrive - The Academy of Interactive Entertainment Ltd\Visual Studio 2024\Assessment 4\Text Game Mechanics\Text Game Mechanics\TimeTests.cpp(13,11): warning C4244: 'initializing': conversion from '_Rep' to 'int', possible loss of data
+          with
+          [
+              _Rep=__int64
+          ]
+  Text Game Mechanics.vcxproj -> C:\Users\s231256\OneDrive - The Academy of Interactive Entertainment Ltd\Visual Studio 2024\Assessment 4\Text Game Mechanics\x64\Debug\Text Game Mechanics.exe
