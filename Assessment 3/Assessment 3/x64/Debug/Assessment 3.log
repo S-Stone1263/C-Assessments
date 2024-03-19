@@ -1,2 +1,21 @@
-﻿  WriteToFile.cpp
+﻿  String.cpp
+C:\Users\s231256\Downloads\C-Assessments-main\C-Assessments-main\Assessment 3\Assessment 3\String.cpp(66,25): warning C4267: 'return': conversion from 'size_t' to 'int', possible loss of data
+C:\Users\s231256\Downloads\C-Assessments-main\C-Assessments-main\Assessment 3\Assessment 3\String.cpp(121,54): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
+C:\Users\s231256\Downloads\C-Assessments-main\C-Assessments-main\Assessment 3\Assessment 3\String.cpp(132,44): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
+C:\Users\s231256\Downloads\C-Assessments-main\C-Assessments-main\Assessment 3\Assessment 3\String.cpp(148,54): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
+C:\Users\s231256\Downloads\C-Assessments-main\C-Assessments-main\Assessment 3\Assessment 3\String.cpp(156,54): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
+C:\Users\s231256\Downloads\C-Assessments-main\C-Assessments-main\Assessment 3\Assessment 3\String.cpp(173,47): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
+C:\Users\s231256\Downloads\C-Assessments-main\C-Assessments-main\Assessment 3\Assessment 3\String.cpp(181,52): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
+C:\Users\s231256\Downloads\C-Assessments-main\C-Assessments-main\Assessment 3\Assessment 3\String.cpp(196,57): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
+C:\Users\s231256\Downloads\C-Assessments-main\C-Assessments-main\Assessment 3\Assessment 3\String.cpp(204,52): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
+C:\Users\s231256\Downloads\C-Assessments-main\C-Assessments-main\Assessment 3\Assessment 3\String.cpp(275,29): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
+C:\Users\s231256\Downloads\C-Assessments-main\C-Assessments-main\Assessment 3\Assessment 3\String.cpp(372,29): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
+C:\Users\s231256\Downloads\C-Assessments-main\C-Assessments-main\Assessment 3\Assessment 3\String.cpp(471,29): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
+C:\Users\s231256\Downloads\C-Assessments-main\C-Assessments-main\Assessment 3\Assessment 3\String.cpp(556,61): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
+C:\Users\s231256\Downloads\C-Assessments-main\C-Assessments-main\Assessment 3\Assessment 3\String.cpp(569,51): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
+C:\Users\s231256\Downloads\C-Assessments-main\C-Assessments-main\Assessment 3\Assessment 3\String.cpp(602,61): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
+C:\Users\s231256\Downloads\C-Assessments-main\C-Assessments-main\Assessment 3\Assessment 3\String.cpp(620,39): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
+C:\Users\s231256\Downloads\C-Assessments-main\C-Assessments-main\Assessment 3\Assessment 3\String.cpp(656,51): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
+  WriteToFile.cpp
+  Generating Code...
   Assessment 3.vcxproj -> C:\Users\s231256\Downloads\C-Assessments-main\C-Assessments-main\Assessment 3\x64\Debug\Assessment 3.exe

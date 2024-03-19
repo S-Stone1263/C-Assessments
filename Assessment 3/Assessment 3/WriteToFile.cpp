@@ -25,8 +25,32 @@ int main()
 	testLog.open("TestLog.txt", std::ios::app);
 
 	testLog << " " << std::endl;
-	testLog << "Date: " << day << "/" << month << "/" << year << " Time: " << hour << ":" << minute << ":" << sec << std::endl;
-	testLog << " " << std::endl;
+	if (month < 10)
+	{
+		testLog << "Date: " << day << "/0" << month << "/" << year;
+	}
+	else
+	{
+		testLog << "Date: " << day << "/" << month << "/" << year;
+	}
+
+	if (minute < 10 && sec < 10)
+	{
+		testLog << " Time: " << hour << ":0" << minute << ":0" << sec << std::endl;
+	}
+	else if (minute < 10)
+	{
+		testLog << " Time: " << hour << ":0" << minute << ":" << sec << std::endl;
+	}
+	else if (sec < 10)
+	{
+		testLog << " Time: " << hour << ":" << minute << ":0" << sec << std::endl;
+	}
+	else
+	{
+		testLog << " Time: " << hour << ":" << minute << ":" << sec << std::endl;
+	}
+
 
 	String string1("Hello");
 	String string2(string1);
@@ -96,7 +120,7 @@ int main()
 
 	//append
 	testLog << "Test 4 Append: ";
-	if (strcmp(string1.Append(string5), expectedAppend) == 0)
+	if (strcmp(string1.Append(string5).Cstr(), expectedAppend) == 0)
 	{
 		testLog << "success" << std::endl;
 		successes++;
@@ -108,7 +132,7 @@ int main()
 
 	//prepend
 	testLog << "Test 5 Prepend: ";
-	if (strcmp(string1.Prepend(string5), expectedPrepend) == 0)
+	if (strcmp(string1.Prepend(string5).Cstr(), expectedPrepend) == 0)
 	{
 		testLog << "success" << std::endl;
 		successes++;
@@ -132,7 +156,7 @@ int main()
 
 	//to lower
 	testLog << "Test 7 To Lower: ";
-	if (strcmp(string1.ToLower(), expectedToLower) == 0)
+	if (strcmp(string1.ToLower().Cstr(), expectedToLower) == 0)
 	{
 		testLog << "success" << std::endl;
 		successes++;
@@ -144,7 +168,7 @@ int main()
 
 	//to upper
 	testLog << "Test 8 To Upper: ";
-	if (strcmp(string1.ToUpper(), expectedToUpper) == 0)
+	if (strcmp(string1.ToUpper().Cstr(), expectedToUpper) == 0)
 	{
 		testLog << "success" << std::endl;
 		successes++;
@@ -182,7 +206,7 @@ int main()
 
 	//replace
 	testLog << "Test 11 Replace: ";
-	if (strcmp(string1.Find("l", "rr"), expectedFind3) == 0)
+	if (strcmp(string1.Replace("l", "rr").Cstr(), expectedFind3) == 0)
 	{
 		testLog << "success" << std::endl;
 		successes++;
@@ -273,6 +297,8 @@ int main()
 	{
 		testLog << "fail" << std::endl;
 	}
+	float successRate = ((successes / 17.0f) * 100);
+	testLog << "There was a " << successRate << "% success rate" << std::endl;
 
 	testLog.close();
 

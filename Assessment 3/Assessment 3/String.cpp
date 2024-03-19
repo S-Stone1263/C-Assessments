@@ -12,7 +12,8 @@ String::String()
 	m_string = new char[strlen(temp) + 1];
 	strcpy_s(m_string, strlen(temp) + 1, temp);
 	m_numberOfMatches = 0;
-
+	m_matchIndex = new int[1];
+	m_matchIndex[0] = -1;
 }
 
 //constructor for defining class member when there is an existing string
@@ -22,21 +23,26 @@ String::String(const char* c)
 	m_string = new char[strlen(c) + 1]; // size of string in parameter plus one for null terminator
 	strcpy_s(m_string, strlen(c) + 1, c); //copy c char[] into member variable
 	m_numberOfMatches = 0;
+	m_matchIndex = new int[1];
+	m_matchIndex[0] = -1;
 
 }
 
 //copy constructor to copy an item from another class entity into this entity
-String::String(String& st)
+String::String(const String& st)
 {
 	m_string = new char[(strlen(st.m_string) + 1)];
 	strcpy_s(m_string, strlen(st.m_string) + 1, st.m_string);
 	m_numberOfMatches = 0;
+	m_matchIndex = new int[1];
+	m_matchIndex[0] = -1;
 
 }
 //destructor
 String::~String()
 {
 	delete[] m_string;
+	delete[] m_matchIndex;
 }
 
 //functions
@@ -108,7 +114,7 @@ const char* String::Cstr()
 	return m_string;
 }
 //adds the argument to the end of the current string
-const char* String::Append(char* c)
+String String::Append(char* c)
 {
 	char space[2] = " ";
 	//Using a variable to store string length
@@ -128,14 +134,15 @@ const char* String::Append(char* c)
 	//
 	strcpy_s(append2, strLength, append);
 	strcat_s(append2, strLength, c);
-	return append2;
-	delete[] append;
-	delete[] append2;
 
+	delete[] append;
+	String temp(append2);
+	delete[] append2;
+	return temp;
 }
 
 //same as previous append using a string object instead of char array
-const char* String::Append(String& st)
+String String::Append(String& st)
 {
 	char space[2] = " ";
 	int strLength = strlen(space) + strlen(m_string) + 1;
@@ -151,14 +158,16 @@ const char* String::Append(String& st)
 
 	strcpy_s(append2, strLength, append);
 	strcat_s(append2, strLength, st.m_string);
-	return append2;
+
 	delete[] append;
+	String temp(append2);
 	delete[] append2;
+	return temp;
 
 }
 
 //similar to append however with the one key difference that the character array argument is copied into the temp array first
-const char* String::Prepend(char* c)
+String String::Prepend(char* c)
 {
 	char space[2] = " ";
 	int strLength = strlen(space) + strlen(c) + 1;
@@ -174,13 +183,14 @@ const char* String::Prepend(char* c)
 
 	strcpy_s(prepend2, strLength, prepend);
 	strcat_s(prepend2, strLength, m_string);
-	return prepend2;
-	delete[] prepend;
-	delete[] prepend2;
 
+	delete[] prepend;
+	String temp(prepend2);
+	delete[] prepend2;
+	return temp;
 }
 
-const char* String::Prepend(String& st)
+String String::Prepend(String& st)
 {
 	char space[2] = " ";
 	int strLength = strlen(space) + strlen(st.m_string) + 1;
@@ -196,14 +206,15 @@ const char* String::Prepend(String& st)
 
 	strcpy_s(prepend2, strLength, prepend);
 	strcat_s(prepend2, strLength, m_string);
-	return prepend2;
-	delete[] prepend;
-	delete[] prepend2;
 
+	delete[] prepend;
+	String temp(prepend2);
+	delete[] prepend2;
+	return temp;
 }
 
 //using c++ functionality to convert current string into lowercase
-const char* String::ToLower()
+String String::ToLower()
 {
 	char* lower = new char[strlen(m_string) + 1];
 	strcpy_s(lower, strlen(m_string) + 1, m_string);
@@ -215,12 +226,14 @@ const char* String::ToLower()
 		lower[i] = tolower(letter);
 
 	}
-	return lower;
+
+	String temp(lower);
 	delete[] lower;
+	return temp;
 }
 
 //using c++ functionality to convert current string into uppercase
-const char* String::ToUpper()
+String String::ToUpper()
 {
 	char* upper = new char[strlen(m_string) + 1];
 	strcpy_s(upper, strlen(m_string) + 1, m_string);
@@ -232,8 +245,11 @@ const char* String::ToUpper()
 		upper[i] = toupper(letter);
 
 	}
-	return upper;
+
+	String temp(upper);
 	delete[] upper;
+	return temp;
+
 }
 
 //creating a function to find if a particular string is contained within the stored member string
@@ -263,6 +279,7 @@ int* String::Find(const char* findstring)
 						if (numberOfMatches == 0) //for the first match it simply creates the array of appropriate size and stores the current position in it
 						{
 							numberOfMatches++;
+							delete[] matchIndexes;
 							matchIndexes = new int[numberOfMatches + 1];
 							matchIndexes[numberOfMatches - 1] = i;
 						}
@@ -291,6 +308,7 @@ int* String::Find(const char* findstring)
 			{
 				if (numberOfMatches == 0)
 				{
+					delete[] matchIndexes;
 					numberOfMatches++;
 					matchIndexes = new int[numberOfMatches];
 					matchIndexes[numberOfMatches - 1] = i;
@@ -322,11 +340,16 @@ int* String::Find(const char* findstring)
 
 		}
 	}
+	delete[] m_matchIndex;
+	m_matchIndex = new int[numberOfMatches];
+
 	m_numberOfMatches = numberOfMatches;
-	return matchIndexes;
-
-
+	for (int i = 0; i < numberOfMatches; i++)
+	{
+		m_matchIndex[i] = matchIndexes[i];
+	}
 	delete[] matchIndexes;
+	return m_matchIndex;
 }
 
 //operates exactly as the function above however the loop begins from the index 
@@ -353,6 +376,7 @@ int* String::Find(const char* findstring, int index)
 						if (numberOfMatches == 0)
 						{
 							numberOfMatches++;
+							delete[] matchIndexes;
 							matchIndexes = new int[numberOfMatches + 1];
 							matchIndexes[numberOfMatches - 1] = i;
 						}
@@ -381,6 +405,7 @@ int* String::Find(const char* findstring, int index)
 			{
 				if (numberOfMatches == 0)
 				{
+					delete[] matchIndexes;
 					numberOfMatches++;
 					matchIndexes = new int[numberOfMatches];
 					matchIndexes[numberOfMatches - 1] = i;
@@ -412,23 +437,26 @@ int* String::Find(const char* findstring, int index)
 
 		}
 	}
-	m_numberOfMatches = numberOfMatches;
-	return matchIndexes;
+	delete[] m_matchIndex;
+	m_matchIndex = new int[numberOfMatches];
 
+	m_numberOfMatches = numberOfMatches;
+	for (int i = 0; i < numberOfMatches; i++)
+	{
+		m_matchIndex[i] = matchIndexes[i];
+	}
 	delete[] matchIndexes;
+	return m_matchIndex;
 }
 
 //exactly the same as the first original find function except after storing the variables the function continues
 
-char* String::Find(const char* findstring, const char* replacestring)
+String String::Replace(const char* findstring, const char* replacestring) const
 {
 	int* matchIndexes;
 	matchIndexes = new int[1];
 	matchIndexes[0] = -1;
 	int numberOfMatches = 0;
-	char* failReturn = new char[2];
-	failReturn[0] = '1';
-	failReturn[1] = '\0';
 
 	for (int i = 0; i < strlen(m_string); i++)
 	{
@@ -447,6 +475,7 @@ char* String::Find(const char* findstring, const char* replacestring)
 						if (numberOfMatches == 0)
 						{
 							numberOfMatches++;
+							delete[] matchIndexes;
 							matchIndexes = new int[numberOfMatches + 1];
 							matchIndexes[numberOfMatches - 1] = i;
 						}
@@ -476,6 +505,7 @@ char* String::Find(const char* findstring, const char* replacestring)
 				if (numberOfMatches == 0)
 				{
 					numberOfMatches++;
+					delete[] matchIndexes;
 					matchIndexes = new int[numberOfMatches];
 					matchIndexes[numberOfMatches - 1] = i;
 				}
@@ -514,8 +544,11 @@ char* String::Find(const char* findstring, const char* replacestring)
 		if (strcmp(findstring, m_string) == 0) //Testing to see if the string to find is the entirety of the string
 		{
 			char* replacedString = new char[strlen(replacestring) + 1]; //initialise new array of appropriate size
-			strcpy_s(replacedString, strlen(replacestring) + 1, replacestring); //copy the replacestring and return it
-			return replacedString;
+			strcpy_s(replacedString, strlen(replacestring) + 1, replacestring); //copy the replacestring
+			String temp(replacedString);
+			delete[] replacedString;
+			delete[] matchIndexes;
+			return temp;
 		}
 
 		else if (strlen(replacestring) > strlen(findstring)) // enter this section if the replacement string is longer than the string found
@@ -559,8 +592,10 @@ char* String::Find(const char* findstring, const char* replacestring)
 				}
 
 			}
-			return replacedString;
+			String temp(replacedString);
 			delete[] replacedString;
+			delete[] matchIndexes;
+			return temp;
 		}
 		else if (strlen(replacestring) < strlen(findstring)) //enter this if the replacestring is shorter than the findstring
 		{
@@ -593,8 +628,10 @@ char* String::Find(const char* findstring, const char* replacestring)
 					replacedString[i] = m_string[i + (currentMatch * difference)]; //filling the array with the original string using the correct character from the original string as the i value changes every match
 				}
 			}
-			return replacedString;
+			String temp(replacedString);
 			delete[] replacedString;
+			delete[] matchIndexes;
+			return temp;
 		}
 		else //enters this if the find string and replace string and operates the same as above except it doesnt have to step through the indexes as the arrays are the same size
 		{
@@ -642,16 +679,19 @@ char* String::Find(const char* findstring, const char* replacestring)
 				}
 
 			}
-			return replacedString;
+			String temp(replacedString);
 			delete[] replacedString;
 			delete[] matchIndexes;
+			return temp;
+
 		}
 	}
 	else
 	{
-		return failReturn;
+		delete[] matchIndexes;
+		String temp("-1");
+		return temp;
 	}
-
 
 
 }
@@ -807,7 +847,7 @@ const char String::operator[](int n) //returning the character at the nth index
 	return m_string[n];
 }
 
-const char* String::operator=(String& other) //setting LHS equal to RHS using strcpy_s
+const char* String::operator=(const String& other) //setting LHS equal to RHS using strcpy_s
 {
 	delete[] m_string;
 	m_string = new char[strlen(other.m_string) + 1];
