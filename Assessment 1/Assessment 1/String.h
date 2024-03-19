@@ -6,8 +6,6 @@ private:
 
 	//declaring a character pointer
 	char* m_string;
-	char* m_appended;
-	char* m_prepended;
 
 public:
 	String();
@@ -30,11 +28,12 @@ public:
 	const char* Prepend(char* c);
 	const char* Prepend(String& st);
 
-	const char* ToLower(char* c);
-	const char* ToLower(String& st);
+	const char* ToLower();
+	const char* ToUpper();
 
-	const char* ToUpper(char* c);
-	const char* ToUpper(String& st);
+	int Find(const char* findstring);
+	int Find(const char* findstring, int index)
+
 
 
 

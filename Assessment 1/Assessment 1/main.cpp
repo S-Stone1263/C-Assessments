@@ -1,4 +1,3 @@
-
 #include "String.h"
 #include <iostream>
 
@@ -8,28 +7,9 @@ int main()
 	char test[16] = "HeLlO UnIVeRse";
 	String string2("HElLo GalAxY");
 	String string3(string1);
+	char randomString[3] = "ll";
 
-	std::cout << string1.CharacterAt(6) << std::endl;
-	std::cout << string1.Append(test) << std::endl;
-	std::cout << string1.ToLower(test) << std::endl;
-	std::cout << string1.Cstr() << std::endl;
-
-
-
-
-
-	bool result = string1.EqualTo(string3);
-
-	if (result == true)
-	{
-		std::cout << "They are the same" << std::endl;
-	}
-	else
-	{
-		std::cout << "They are different" << std::endl;
-	}
-
-
+	std::cout << string1.Find(randomString) << std::endl;
 	return 0;
 
 }

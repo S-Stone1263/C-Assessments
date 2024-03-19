@@ -15,11 +15,6 @@ String::String()
 	m_string = new char[strlen(temp) + 1];
 	strcpy_s(m_string, strlen(temp) + 1, temp);
 
-	m_appended = new char[strlen(temp) + 1];
-	strcpy_s(m_appended, strlen(temp) + 1, temp);
-
-	m_prepended = new char[strlen(temp) + 1];
-	strcpy_s(m_prepended, strlen(temp) + 1, temp);
 }
 
 //constructor for defining class member when there is an existing string
@@ -27,16 +22,8 @@ String::String(const char* c)
 {
 	// dynamically allocating space for this object
 	m_string = new char[strlen(c) + 1]; // size of string in parameter plus one for null terminator
-
 	strcpy_s(m_string, strlen(c) + 1, c); //copy c char[] into member variable
 
-	m_appended = new char[strlen(c) + 1];
-
-	strcpy_s(m_appended, strlen(c) + 1, c);
-
-	m_prepended = new char[strlen(c) + 1];
-
-	strcpy_s(m_prepended, strlen(c) + 1, c);
 }
 
 //copy constructor to copy an item from another class entity into this entity
@@ -44,13 +31,6 @@ String::String(String& st)
 {
 	m_string = new char[(strlen(st.m_string) + 1)];
 	strcpy_s(m_string, strlen(st.m_string) + 1, st.m_string);
-
-	m_appended = new char[(strlen(st.m_appended) + 1)];
-	strcpy_s(m_appended, strlen(st.m_appended) + 1, st.m_appended);
-
-	m_prepended = new char[(strlen(st.m_prepended) + 1)];
-	strcpy_s(m_prepended, strlen(st.m_prepended) + 1, st.m_prepended);
-
 
 }
 //destructor
@@ -134,24 +114,16 @@ const char* String::Append(char* c)
 	//Updating string length and creating another array for storing the member variable, space and the character array
 	strLength = strlen(append) + strlen(c) + 1;
 	append2 = new char[strLength];
-
+	//
 	strcpy_s(append2, strLength, append);
 	strcat_s(append2, strLength, c);
-
-	//deleting the current string array
-	delete[] m_appended;
-
-	//creating a new appended array of required size
-	m_appended = new char[strLength];
-
-	//copying appended string into member variable and deleting the temporary arrays
-	strcpy_s(m_appended, strLength, append2);
+	return append2;
 	delete[] append;
 	delete[] append2;
-	return m_appended;
+
 }
 
-//same as previous append
+//same as previous append using a string object instead of char array
 const char* String::Append(String& st)
 {
 	char space[2] = " ";
@@ -168,15 +140,10 @@ const char* String::Append(String& st)
 
 	strcpy_s(append2, strLength, append);
 	strcat_s(append2, strLength, st.m_string);
-
-	delete[] m_appended;
-
-	m_appended = new char[strLength];
-
-	strcpy_s(m_appended, strLength, append2);
+	return append2;
 	delete[] append;
 	delete[] append2;
-	return m_appended;
+
 }
 
 //similar to append however with the one key difference that the character array argument is copied into the temp array first
@@ -196,15 +163,10 @@ const char* String::Prepend(char* c)
 
 	strcpy_s(prepend2, strLength, prepend);
 	strcat_s(prepend2, strLength, m_string);
-
-	delete[] m_prepended;
-
-	m_prepended = new char[strLength];
-
-	strcpy_s(m_prepended, strLength, prepend2);
+	return prepend2;
 	delete[] prepend;
 	delete[] prepend2;
-	return m_prepended;
+
 }
 
 const char* String::Prepend(String& st)
@@ -223,82 +185,221 @@ const char* String::Prepend(String& st)
 
 	strcpy_s(prepend2, strLength, prepend);
 	strcat_s(prepend2, strLength, m_string);
-
-	delete[] m_prepended;
-
-	m_prepended = new char[strLength];
-
-	strcpy_s(m_prepended, strLength, prepend2);
+	return prepend2;
 	delete[] prepend;
 	delete[] prepend2;
-	return m_prepended;
+
 }
 
-const char* String::ToLower(char* c)
+//using c++ functionality to convert current string into lowercase
+const char* String::ToLower()
 {
-	for (int i = 0; i < strlen(c); i++)
+	char* lower = new char[strlen(m_string) + 1];
+	strcpy_s(lower, strlen(m_string) + 1, m_string);
+
+	for (int i = 0; i < strlen(m_string); i++)
 	{
 		int letter = 0;
-		letter = c[i];
-		c[i] = tolower(letter);
+		letter = lower[i];
+		lower[i] = tolower(letter);
 
 	}
-
-	delete[] m_string;
-	m_string = new char[strlen(c) + 1];
-	strcpy_s(m_string, strlen(c) + 1, c);
-	return m_string;
+	return lower;
+	delete[] lower;
 }
 
-const char* String::ToLower(String& st)
+//using c++ functionality to convert current string into uppercase
+const char* String::ToUpper()
 {
+	char* upper = new char[strlen(m_string) + 1];
+	strcpy_s(upper, strlen(m_string) + 1, m_string);
 
-	int strLength = strlen(st.m_string);
-
-	for (int i = 0; i < strlen(st.m_string); i++)
+	for (int i = 0; i < strlen(m_string); i++)
 	{
 		int letter = 0;
-		letter = st.m_string[i];
-		st.m_string[i] = tolower(letter);
+		letter = upper[i];
+		upper[i] = tolower(letter);
 
 	}
-
-	delete[] m_string;
-	m_string = new char[strlen(st.m_string) + 1];
-	strcpy_s(m_string, strLength + 1, st.m_string);
-	return m_string;
+	return upper;
+	delete[] upper;
 }
 
-const char* String::ToUpper(char* c)
-{
-	for (int i = 0; i < strlen(c); i++)
-	{
-		int letter = 0;
-		letter = c[i];
-		c[i] = toupper(letter);
 
+int String::Find(const char* findstring)
+{
+	int* matchIndexes;
+	matchIndexes = new int[1];
+	int numberOfMatches = 0;
+	for (int i = 0; i < strlen(m_string); i++)
+	{
+		if (m_string[i] == findstring[0])
+		{
+			if (strlen(findstring) > 1)
+			{
+				for (int j = 1; j < strlen(findstring); j++)
+				{
+					if (findstring[j] != m_string[i + j])
+					{
+						j = strlen(findstring);
+					}
+					if (j == (strlen(findstring) - 1))
+					{
+						if (numberOfMatches == 0)
+						{
+							numberOfMatches++;
+							matchIndexes = new int[numberOfMatches + 1];
+							matchIndexes[numberOfMatches - 1] = i;
+						}
+						else
+						{
+							numberOfMatches++;
+							int* temp = new int[numberOfMatches + 1];
+							for (int i = 0; i < numberOfMatches - 1; i++)
+							{
+								temp[i] = matchIndexes[i];
+							}
+
+							delete[] matchIndexes;
+							matchIndexes = new int[numberOfMatches];
+
+							for (int i = 0; i < numberOfMatches; i++)
+							{
+								matchIndexes[i] = temp[i];
+							}
+							delete[] temp;
+						}
+					}
+				}
+			}
+			else
+			{
+				if (numberOfMatches == 0)
+				{
+					numberOfMatches++;
+					matchIndexes = new int[numberOfMatches + 1];
+					matchIndexes[numberOfMatches - 1] = i;
+				}
+				else
+				{
+					numberOfMatches++;
+					int* temp = new int[numberOfMatches + 1];
+					for (int i = 0; i < numberOfMatches - 1; i++)
+					{
+						temp[i] = matchIndexes[i];
+					}
+
+					delete[] matchIndexes;
+					matchIndexes = new int[numberOfMatches];
+
+					for (int i = 0; i < numberOfMatches; i++)
+					{
+						matchIndexes[i] = temp[i];
+					}
+					delete[] temp;
+				}
+			}
+
+
+
+		}
 	}
 
-	delete[] m_string;
-	m_string = new char[strlen(c) + 1];
-	strcpy_s(m_string, strlen(c) + 1, c);
-	return m_string;
+	if (numberOfMatches > 0)
+	{
+		return matchIndexes[0];
+	}
+	else
+	{
+		return -1;
+	}
 }
 
-const char* String::ToUpper(String& st)
+int String::Find(const char* findstring, int index)
 {
-	int strLength = strlen(st.m_string);
-
-	for (int i = 0; i < strlen(st.m_string); i++)
+	int* matchIndexes;
+	matchIndexes = new int[1];
+	int numberOfMatches = 0;
+	for (int i = index; i < strlen(m_string); i++)
 	{
-		int letter = 0;
-		letter = st.m_string[i];
-		st.m_string[i] = toupper(letter);
+		if (m_string[i] == findstring[0])
+		{
+			if (strlen(findstring) > 1)
+			{
+				for (int j = 1; j < strlen(findstring); j++)
+				{
+					if (findstring[j] != m_string[i + j])
+					{
+						j = strlen(findstring);
+					}
+					if (j == (strlen(findstring) - 1))
+					{
+						if (numberOfMatches == 0)
+						{
+							numberOfMatches++;
+							matchIndexes = new int[numberOfMatches + 1];
+							matchIndexes[numberOfMatches - 1] = i;
+						}
+						else
+						{
+							numberOfMatches++;
+							int* temp = new int[numberOfMatches + 1];
+							for (int i = 0; i < numberOfMatches - 1; i++)
+							{
+								temp[i] = matchIndexes[i];
+							}
 
+							delete[] matchIndexes;
+							matchIndexes = new int[numberOfMatches];
+
+							for (int i = 0; i < numberOfMatches; i++)
+							{
+								matchIndexes[i] = temp[i];
+							}
+							delete[] temp;
+						}
+					}
+				}
+			}
+			else
+			{
+				if (numberOfMatches == 0)
+				{
+					numberOfMatches++;
+					matchIndexes = new int[numberOfMatches + 1];
+					matchIndexes[numberOfMatches - 1] = i;
+				}
+				else
+				{
+					numberOfMatches++;
+					int* temp = new int[numberOfMatches + 1];
+					for (int i = 0; i < numberOfMatches - 1; i++)
+					{
+						temp[i] = matchIndexes[i];
+					}
+
+					delete[] matchIndexes;
+					matchIndexes = new int[numberOfMatches];
+
+					for (int i = 0; i < numberOfMatches; i++)
+					{
+						matchIndexes[i] = temp[i];
+					}
+					delete[] temp;
+				}
+			}
+
+
+
+		}
 	}
 
-	delete[] m_string;
-	m_string = new char[strlen(st.m_string) + 1];
-	strcpy_s(m_string, strLength + 1, st.m_string);
-	return m_string;
+	if (numberOfMatches > 0)
+	{
+		return matchIndexes[0];
+	}
+	else
+	{
+		return -1;
+	}
 }
