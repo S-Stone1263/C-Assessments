@@ -1,3 +1,4 @@
+
 #pragma once
 #include <iostream>
 class String
@@ -10,10 +11,12 @@ private:
 	//using this to store the number of matches from the find function for use in main file
 	int m_numberOfMatches;
 
+	//to make the find function operate as written without memory leaks, this member variable is needed to store the array
+	int* m_matchIndex;
 public:
 	String();
 	String(const char* c);
-	String(String& st);
+	String(const String& st);
 	~String();
 
 	int GetNumMatches();
@@ -27,18 +30,18 @@ public:
 
 	const char* Cstr();
 
-	const char* Append(char* c);
-	const char* Append(String& st);
+	String Append(char* c);
+	String Append(String& st);
 
-	const char* Prepend(char* c);
-	const char* Prepend(String& st);
+	String Prepend(char* c);
+	String Prepend(String& st);
 
-	const char* ToLower();
-	const char* ToUpper();
+	String ToLower();
+	String ToUpper();
 
 	int* Find(const char* findstring);
 	int* Find(const char* findstring, int index);
-	char* Find(const char* findstring, const char* replacestring);
+	String Replace(const char* findstring, const char* replacestring) const;
 
 	const char* ReadFromConsole();
 	void WriteToConsole();
@@ -48,11 +51,8 @@ public:
 
 	const char operator[](int n);
 
-	const char* operator=(String& other);
+	const char* operator=(const String& other);
 	const char* operator=(const char* other);
 
 	bool operator<(String& other);
-
-
-
 };
