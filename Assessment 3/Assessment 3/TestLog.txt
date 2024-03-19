@@ -1,0 +1,20 @@
+ 
+Date: 20/3/2024 Time: 10:20:35
+ 
+Test 1 Length: success
+Test 2 Character at: success
+Test 3 Equal to: success
+Test 4 Append: success
+Test 5 Prepend: success
+Test 6 Cstr: success
+Test 7 To Lower: success
+Test 8 To Upper: success
+Test 9 Find: success
+Test 10 Find from index: success
+Test 11 Replace: success
+Test 12 Read: success
+Test 13 Write: success
+Test 14 Equality: success
+Test 15 Subscript: success
+Test 16 Assign: success
+Test 17 Less Than: success

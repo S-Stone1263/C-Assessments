@@ -1,4 +1,3 @@
-
 #include "String.h"
 #include <iostream>
 #include <fstream>
@@ -18,18 +17,24 @@ int main()
 	int month = 1 + newtime.tm_mon;
 	int year = newtime.tm_year + 1900;
 
-	std::cout << "Date: " << day << "/" << month << "/" << year << " Time: " << hour << ":" << minute << ":" << sec << std::endl;
 
 
 
-	//std::fstream testLog;
-	//testLog.open("TestLog.txt", std::ios::app);
+
+	std::fstream testLog;
+	testLog.open("TestLog.txt", std::ios::app);
+
+	testLog << " " << std::endl;
+	testLog << "Date: " << day << "/" << month << "/" << year << " Time: " << hour << ":" << minute << ":" << sec << std::endl;
+	testLog << " " << std::endl;
+
 	String string1("Hello");
 	String string2(string1);
 	String string3("Hello Galaxy");
 	String string4;
 	String string5("a");
 	String string6("b");
+	int successes = 0;
 
 	int expectedLength = 5;
 	char expectedChar = 'H';
@@ -50,133 +55,158 @@ int main()
 	bool expectedLessThan = true;
 
 	//length
+	testLog << "Test 1 Length: ";
 	int realLength = string1.Length();
 	if (expectedLength == realLength)
 	{
-		std::cout << "success" << std::endl;
+		testLog << "success" << std::endl;
+		successes++;
 	}
 	else
 	{
-		std::cout << "fail" << std::endl;
+		testLog << "fail" << std::endl;
 	}
 
 	//Character at
+	testLog << "Test 2 Character at: ";
 	char realChar = string1.CharacterAt(0);
 	if (expectedChar == realChar)
 	{
-		std::cout << "success" << std::endl;
+		testLog << "success" << std::endl;
+		successes++;
 	}
 	else
 	{
-		std::cout << "fail" << std::endl;
+		testLog << "fail" << std::endl;
 	}
 
 	//Equal to
+	testLog << "Test 3 Equal to: ";
 	bool realEqual = string1.EqualTo(string2);
 	if (expectedEqual == realEqual)
 	{
-		std::cout << "success" << std::endl;
+		testLog << "success" << std::endl;
+		successes++;
 	}
 	else
 	{
-		std::cout << "fail" << std::endl;
+		testLog << "fail" << std::endl;
 	}
 
 
 	//append
+	testLog << "Test 4 Append: ";
 	if (strcmp(string1.Append(string5), expectedAppend) == 0)
 	{
-		std::cout << "success" << std::endl;
+		testLog << "success" << std::endl;
+		successes++;
 	}
 	else
 	{
-		std::cout << "fail" << std::endl;
+		testLog << "fail" << std::endl;
 	}
 
 	//prepend
+	testLog << "Test 5 Prepend: ";
 	if (strcmp(string1.Prepend(string5), expectedPrepend) == 0)
 	{
-		std::cout << "success" << std::endl;
+		testLog << "success" << std::endl;
+		successes++;
 	}
 	else
 	{
-		std::cout << "fail" << std::endl;
+		testLog << "fail" << std::endl;
 	}
 
 	//CStr
+	testLog << "Test 6 Cstr: ";
 	if (strcmp(string1.Cstr(), expectedCStr) == 0)
 	{
-		std::cout << "success" << std::endl;
+		testLog << "success" << std::endl;
+		successes++;
 	}
 	else
 	{
-		std::cout << "fail" << std::endl;
+		testLog << "fail" << std::endl;
 	}
 
 	//to lower
+	testLog << "Test 7 To Lower: ";
 	if (strcmp(string1.ToLower(), expectedToLower) == 0)
 	{
-		std::cout << "success" << std::endl;
+		testLog << "success" << std::endl;
+		successes++;
 	}
 	else
 	{
-		std::cout << "fail" << std::endl;
+		testLog << "fail" << std::endl;
 	}
 
 	//to upper
+	testLog << "Test 8 To Upper: ";
 	if (strcmp(string1.ToUpper(), expectedToUpper) == 0)
 	{
-		std::cout << "success" << std::endl;
+		testLog << "success" << std::endl;
+		successes++;
 	}
 	else
 	{
-		std::cout << "fail" << std::endl;
+		testLog << "fail" << std::endl;
 	}
 
 	//find string
+	testLog << "Test 9 Find: ";
 	if (expectedFind == string1.Find("l")[0])
 	{
-		std::cout << "success" << std::endl;
+		testLog << "success" << std::endl;
+		successes++;
 	}
 	else
 	{
-		std::cout << "fail" << std::endl;
+		testLog << "fail" << std::endl;
 	}
 
 
 
 	//find from index
+	testLog << "Test 10 Find from index: ";
 	if (expectedFind2 == string1.Find("l", 3)[0])
 	{
-		std::cout << "success" << std::endl;
+		testLog << "success" << std::endl;
+		successes++;
 	}
 	else
 	{
-		std::cout << "fail" << std::endl;
+		testLog << "fail" << std::endl;
 	}
 
 	//replace
+	testLog << "Test 11 Replace: ";
 	if (strcmp(string1.Find("l", "rr"), expectedFind3) == 0)
 	{
-		std::cout << "success" << std::endl;
+		testLog << "success" << std::endl;
+		successes++;
 	}
 	else
 	{
-		std::cout << "fail" << std::endl;
+		testLog << "fail" << std::endl;
 	}
 
 	//read from console
+	testLog << "Test 12 Read: ";
 	std::cout << "Enter 1 for number of words and sean for your word" << std::endl;
 	if (strcmp(string4.ReadFromConsole(), expectedRead) == 0)
 	{
-		std::cout << "success" << std::endl;
+		testLog << "success" << std::endl;
+		successes++;
 	}
 	else
 	{
-		std::cout << "fail" << std::endl;
+		testLog << "fail" << std::endl;
 	}
 
 	//write to console
+	testLog << "Test 13 Write: ";
 	string4.WriteToConsole();
 	char userResult[4];
 	std::cout << "Does the console output above read sean? (if so input yes, if not input no)" << std::endl;
@@ -184,56 +214,67 @@ int main()
 
 	if (strcmp(userResult, expectedWrite) == 0)
 	{
-		std::cout << "success" << std::endl;
+		testLog << "success" << std::endl;
+		successes++;
 	}
 	else
 	{
-		std::cout << "fail" << std::endl;
+		testLog << "fail" << std::endl;
 	}
 
 
 	//equality operator
+	testLog << "Test 14 Equality: ";
 	bool equalityResult = string1 == string2;
 	if (equalityResult == expectedEquality)
 	{
-		std::cout << "success" << std::endl;
+		testLog << "success" << std::endl;
+		successes++;
 	}
 	else
 	{
-		std::cout << "fail" << std::endl;
+		testLog << "fail" << std::endl;
 	}
 
 	//subscript
+	testLog << "Test 15 Subscript: ";
 	if (string1[0] == 'H')
 	{
-		std::cout << "success" << std::endl;
+		testLog << "success" << std::endl;
+		successes++;
 	}
 	else
 	{
-		std::cout << "fail" << std::endl;
+		testLog << "fail" << std::endl;
 	}
 
 	//assign
+	testLog << "Test 16 Assign: ";
 	string1 = string3;
 	if (strcmp(string1.Cstr(), expectedAssign) == 0)
 	{
-		std::cout << "success" << std::endl;
+		testLog << "success" << std::endl;
+		successes++;
 	}
 	else
 	{
-		std::cout << "fail" << std::endl;
+		testLog << "fail" << std::endl;
 	}
 
 	//Less than
+	testLog << "Test 17 Less Than: ";
 	bool lessThanResult = string5 < string6;
 	if (lessThanResult == expectedLessThan)
 	{
-		std::cout << "success" << std::endl;
+		testLog << "success" << std::endl;
+		successes++;
 	}
 	else
 	{
-		std::cout << "fail" << std::endl;
+		testLog << "fail" << std::endl;
 	}
+
+	testLog.close();
 
 	return 0;
 
