@@ -1,13 +1,12 @@
 #include "String.h"
 #include <iostream>
 
+
 // query error thrown by prepend when taking in the member of an object
 // query whether it is more appropriate to use references or pointers
 
 
 //Constructors and Destructors
-
-
 // Default constructor
 String::String()
 {
@@ -15,23 +14,18 @@ String::String()
 	m_string = new char[strlen(temp) + 1];
 	strcpy_s(m_string, strlen(temp) + 1, temp);
 }
-
 // Constructor for defining class member when there is an existing string
 String::String(const char* c)
 {
 	// dynamically allocating space for this object
 	m_string = new char[strlen(c) + 1]; // size of string in parameter plus one for null terminator
-
 	strcpy_s(m_string, strlen(c) + 1, c); //copy c char[] into member variable
 }
-
 // Copy constructor to copy an item from another class entity into this entity
 String::String(String& st)
 {
 	m_string = new char[(strlen(st.m_string) + 1)];
 	strcpy_s(m_string, strlen(st.m_string) + 1, st.m_string);
-
-
 }
 // Destructor
 String::~String()
@@ -39,45 +33,41 @@ String::~String()
 	std::cout << "Destructor Called" << std::endl;
 	delete[] m_string;
 }
-
 // Functions
-
-
 // Getting the length of the stored string
 int String::Length()
 {
 	return strlen(m_string);
 }
-
-
-
 //Comparing stored string to a character array and returning true of they the same and false if not
 bool String::EqualTo(const char* c)
 {
 	if (strcmp(m_string, c) == 0)
-	{
-		return true;
-	}
-	else
-	{
-		return false;
-	}
+		if (strcmp(m_string, c) == 0)
+		{
+			return true;
+		}
+		else
+		{
+			return false;
+		}
 
 }
 
+//Comparing stored string to another object of the string class and returning true of they the same and false if not
 //Comparing stored string to another object of the referenced string class and returning true of they the same and false if not
 bool String::EqualTo(String& st)
 {
 	if (strcmp(m_string, st.m_string) == 0)
-	{
-		return true;
-	}
-	else
-	{
-		return false;
-	}
+		if (strcmp(m_string, st.m_string) == 0)
+		{
+			return true;
+		}
+		else
+		{
+			return false;
+		}
 }
-
 const char* String::Cstr()
 {
 	return m_string;
@@ -136,5 +126,74 @@ const char* String::Prepend(String& st)
 	m_string = new char[strLength + 1];
 	strcpy_s(m_string, strLength + 1, prepend);
 	delete[] prepend;
+	return m_string;
+}
+
+const char* String::ToLower(char* c)
+{
+	for (int i = 0; i < strlen(c); i++)
+	{
+		int letter = 0;
+		letter = c[i];
+		c[i] = tolower(letter);
+
+	}
+
+	delete[] m_string;
+	m_string = new char[strlen(c) + 1];
+	strcpy_s(m_string, strlen(c) + 1, c);
+	return m_string;
+}
+
+const char* String::ToLower(String& st)
+{
+
+	int strLength = strlen(st.m_string);
+
+	for (int i = 0; i < strlen(st.m_string); i++)
+	{
+		int letter = 0;
+		letter = st.m_string[i];
+		st.m_string[i] = tolower(letter);
+
+	}
+
+	delete[] m_string;
+	m_string = new char[strlen(st.m_string) + 1];
+	strcpy_s(m_string, strLength + 1, st.m_string);
+	return m_string;
+}
+
+const char* String::ToUpper(char* c)
+{
+	for (int i = 0; i < strlen(c); i++)
+	{
+		int letter = 0;
+		letter = c[i];
+		c[i] = toupper(letter);
+
+	}
+
+	delete[] m_string;
+	m_string = new char[strlen(c) + 1];
+	strcpy_s(m_string, strlen(c) + 1, c);
+	return m_string;
+}
+
+const char* String::ToUpper(String& st)
+{
+	int strLength = strlen(st.m_string);
+
+	for (int i = 0; i < strlen(st.m_string); i++)
+	{
+		int letter = 0;
+		letter = st.m_string[i];
+		st.m_string[i] = toupper(letter);
+
+	}
+
+	delete[] m_string;
+	m_string = new char[strlen(st.m_string) + 1];
+	strcpy_s(m_string, strLength + 1, st.m_string);
 	return m_string;
 }
