@@ -7,7 +7,7 @@ int main()
 	String string1("Hello");
 	String string2("Hello Galaxy");
 
-	string1.Find("l", "rr");
+	std::cout << string1.Find("Hell", "COD") << std::endl;
 
 	return 0;
 

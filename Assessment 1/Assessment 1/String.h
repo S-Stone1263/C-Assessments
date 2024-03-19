@@ -33,7 +33,7 @@ public:
 
 	void Find(const char* findstring);
 	void Find(const char* findstring, int index);
-	void Find(const char* findstring, const char* replacestring);
+	char* Find(const char* findstring, const char* replacestring);
 
 	const char* ReadFromConsole();
 	void WriteToConsole();

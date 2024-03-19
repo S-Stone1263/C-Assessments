@@ -1,2 +1,23 @@
 ﻿  main.cpp
-  Assessment 1.vcxproj -> C:\Users\s231256\OneDrive - The Academy of Interactive Entertainment Ltd\Visual Studio 2024\Updating Git Repo\Assessment 1\x64\Debug\Assessment 1.exe
+  String.cpp
+C:\Users\s231256\Downloads\C-Assessments-main\C-Assessments-main\Assessment 1\Assessment 1\String.cpp(55,25): warning C4267: 'return': conversion from 'size_t' to 'int', possible loss of data
+C:\Users\s231256\Downloads\C-Assessments-main\C-Assessments-main\Assessment 1\Assessment 1\String.cpp(110,54): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
+C:\Users\s231256\Downloads\C-Assessments-main\C-Assessments-main\Assessment 1\Assessment 1\String.cpp(121,44): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
+C:\Users\s231256\Downloads\C-Assessments-main\C-Assessments-main\Assessment 1\Assessment 1\String.cpp(136,54): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
+C:\Users\s231256\Downloads\C-Assessments-main\C-Assessments-main\Assessment 1\Assessment 1\String.cpp(144,54): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
+C:\Users\s231256\Downloads\C-Assessments-main\C-Assessments-main\Assessment 1\Assessment 1\String.cpp(159,47): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
+C:\Users\s231256\Downloads\C-Assessments-main\C-Assessments-main\Assessment 1\Assessment 1\String.cpp(167,52): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
+C:\Users\s231256\Downloads\C-Assessments-main\C-Assessments-main\Assessment 1\Assessment 1\String.cpp(181,57): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
+C:\Users\s231256\Downloads\C-Assessments-main\C-Assessments-main\Assessment 1\Assessment 1\String.cpp(189,52): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
+C:\Users\s231256\Downloads\C-Assessments-main\C-Assessments-main\Assessment 1\Assessment 1\String.cpp(253,29): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
+C:\Users\s231256\Downloads\C-Assessments-main\C-Assessments-main\Assessment 1\Assessment 1\String.cpp(360,29): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
+C:\Users\s231256\Downloads\C-Assessments-main\C-Assessments-main\Assessment 1\Assessment 1\String.cpp(470,29): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
+C:\Users\s231256\Downloads\C-Assessments-main\C-Assessments-main\Assessment 1\Assessment 1\String.cpp(551,61): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
+C:\Users\s231256\Downloads\C-Assessments-main\C-Assessments-main\Assessment 1\Assessment 1\String.cpp(564,51): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
+C:\Users\s231256\Downloads\C-Assessments-main\C-Assessments-main\Assessment 1\Assessment 1\String.cpp(595,61): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
+C:\Users\s231256\Downloads\C-Assessments-main\C-Assessments-main\Assessment 1\Assessment 1\String.cpp(613,39): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
+C:\Users\s231256\Downloads\C-Assessments-main\C-Assessments-main\Assessment 1\Assessment 1\String.cpp(647,51): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
+  Generating Code...
+C:\Users\s231256\Downloads\C-Assessments-main\C-Assessments-main\Assessment 1\Assessment 1\String.cpp(680): warning C4715: 'String::Find': not all control paths return a value
+  LINK : C:\Users\s231256\Downloads\C-Assessments-main\C-Assessments-main\Assessment 1\x64\Debug\Assessment 1.exe not found or not built by the last incremental link; performing full link
+  Assessment 1.vcxproj -> C:\Users\s231256\Downloads\C-Assessments-main\C-Assessments-main\Assessment 1\x64\Debug\Assessment 1.exe

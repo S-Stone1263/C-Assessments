@@ -449,11 +449,12 @@ void String::Find(const char* findstring, int index)
 
 //exactly the same as the first original find function except after storing the variables the function continues
 
-void String::Find(const char* findstring, const char* replacestring)
+char* String::Find(const char* findstring, const char* replacestring)
 {
 	//creating a new array to store the positions of the matched string
 	int* matchIndexes;
 	matchIndexes = new int[1];
+	matchIndexes[0] = -1;
 	int numberOfMatches = 0;
 
 	for (int i = 0; i < strlen(m_string); i++) //starting a loop to check every letter of the member string against the first letter of the input string
@@ -533,147 +534,147 @@ void String::Find(const char* findstring, const char* replacestring)
 		}
 	}
 
-
-	//loops throgh the matches index to find the position at which a character needs replacing
-	int difference;
-	if (strlen(replacestring) > strlen(findstring))
+	if (matchIndexes[0] != -1)
 	{
-		difference = (strlen(replacestring) - strlen(findstring));
-		char* replacedString = new char[strlen(m_string) + (numberOfMatches * difference) + 1];
-		int currentMatch = 0;
+		//loops throgh the matches index to find the position at which a character needs replacing
+		int difference;
 
-		for (int i = 0; i < strlen(m_string) + (numberOfMatches * difference) + 1; i++)
+		if (strcmp(findstring, m_string) == 0)
 		{
-			if (i == matchIndexes[currentMatch])
-			{
-				for (int j = 0; j < strlen(replacestring); j++)
-				{
-					replacedString[i + j] = replacestring[j];
-				}
+			char* replacedString = new char[strlen(replacestring) + 1];
+			strcpy_s(replacedString, strlen(replacestring) + 1, replacestring);
+			return replacedString;
+		}
 
-				i = i + difference;
-				if (currentMatch < numberOfMatches)
-				{
-					currentMatch++;
-				}
+		else if (strlen(replacestring) > strlen(findstring))
+		{
+			difference = (strlen(replacestring) - strlen(findstring));
+			char* replacedString = new char[strlen(m_string) + (numberOfMatches * difference) + 1];
+			int currentMatch = 0;
 
-				for (int j = 0; j < numberOfMatches; j++)
-				{
-					matchIndexes[j] = matchIndexes[j] + difference;
-				}
-			}
-			else
+			for (int i = 0; i < strlen(m_string) + (numberOfMatches * difference) + 1; i++)
 			{
-				int currentDiff;
-				if (currentMatch == 0)
+				if (i == matchIndexes[currentMatch])
 				{
-					currentDiff = 0;
+					for (int j = 0; j < strlen(replacestring); j++)
+					{
+						replacedString[i + j] = replacestring[j];
+					}
+
+					i = i + difference + (strlen(findstring) - 1);
+					if (currentMatch < numberOfMatches)
+					{
+						currentMatch++;
+					}
+
+					for (int j = 0; j < numberOfMatches; j++)
+					{
+						matchIndexes[j] = matchIndexes[j] + difference;
+					}
 				}
 				else
 				{
-					currentDiff = currentMatch * difference;
+					int currentDiff;
+					if (currentMatch == 0)
+					{
+						currentDiff = 0;
+					}
+					else
+					{
+						currentDiff = currentMatch * difference;
+					}
+					replacedString[i] = m_string[i - currentDiff];
 				}
-				replacedString[i] = m_string[i - currentDiff];
-			}
 
+			}
+			return replacedString;
+			delete[] replacedString;
 		}
-
-		std::cout << replacedString << std::endl;
-		delete[] replacedString;
-		delete[] matchIndexes;
-	}
-	else if (strlen(replacestring) < strlen(findstring))
-	{
-		difference = (strlen(replacestring) - strlen(findstring));
-		char* replacedString = new char[strlen(m_string) - (numberOfMatches * difference) + 1];
-		int currentMatch = 0;
-
-		for (int i = 0; i < strlen(m_string) - (numberOfMatches * difference) + 1; i++)
+		else if (strlen(replacestring) < strlen(findstring))
 		{
-			if (i == matchIndexes[currentMatch])
+			difference = (strlen(findstring) - strlen(replacestring));
+			char* replacedString = new char[strlen(m_string) - (numberOfMatches * difference) + 1];
+			replacedString[strlen(m_string) - (numberOfMatches * difference)] = '\0';
+			int currentMatch = 0;
+			for (int i = 0; i < strlen(m_string) - (numberOfMatches * difference); i++)
 			{
-				for (int j = 0; j < strlen(replacestring); j++)
-				{
-					replacedString[i + j] = replacestring[j];
-				}
-
-				i = i + difference;
-				if (currentMatch < numberOfMatches)
-				{
-					currentMatch++;
-				}
-
-				for (int j = 0; j < numberOfMatches; j++)
-				{
-					matchIndexes[j] = matchIndexes[j] - difference;
-				}
+				replacedString[i] = '_';
 			}
-			else
+
+			for (int i = 0; i < strlen(m_string) - (numberOfMatches * difference) + 1; i++)
 			{
-				int currentDiff;
-				if (currentMatch == 0)
+				if (i == matchIndexes[currentMatch])
 				{
-					currentDiff = 0;
+					for (int j = 0; j < strlen(replacestring); j++)
+					{
+						replacedString[i + j] = replacestring[j];
+					}
+					currentMatch++;
+					i = i + strlen(replacestring) - 1;
+				}
+				else if (currentMatch == 0)
+				{
+					replacedString[i] = m_string[i];
 				}
 				else
 				{
-					currentDiff = currentMatch * difference;
+					replacedString[i] = m_string[i + (currentMatch * difference)];
 				}
-				replacedString[i] = m_string[i + currentDiff];
 			}
-
+			return replacedString;
+			delete[] replacedString;
 		}
-
-		std::cout << replacedString << std::endl;
-		delete[] replacedString;
-		delete[] matchIndexes;
-	}
-	else
-	{
-		difference = 0;
-		char* replacedString = new char[strlen(m_string) + (numberOfMatches * difference) + 1];
-		int currentMatch = 0;
-
-		for (int i = 0; i < strlen(m_string) + (numberOfMatches * difference) + 1; i++)
+		else
 		{
-			if (i == matchIndexes[currentMatch])
+			difference = 0;
+			char* replacedString = new char[strlen(m_string) + 1];
+			replacedString[strlen(m_string)] = '\0';
+			int currentMatch = 0;
+			for (int i = 0; i < strlen(m_string) - (numberOfMatches * difference); i++)
 			{
-				for (int j = 0; j < strlen(replacestring); j++)
-				{
-					replacedString[i + j] = replacestring[j];
-				}
-
-				i = i + difference;
-				if (currentMatch < numberOfMatches)
-				{
-					currentMatch++;
-				}
-
-				for (int j = 0; j < numberOfMatches; j++)
-				{
-					matchIndexes[j] = matchIndexes[j] + difference;
-				}
+				replacedString[i] = '_';
 			}
-			else
+
+			for (int i = 0; i < strlen(m_string) + (numberOfMatches * difference); i++)
 			{
-				int currentDiff;
-				if (currentMatch == 0)
+				if (i == matchIndexes[currentMatch])
 				{
-					currentDiff = 0;
+					for (int j = 0; j < strlen(replacestring); j++)
+					{
+						replacedString[i + j] = replacestring[j];
+					}
+
+					i = i + difference + (strlen(findstring) - 1);
+					if (currentMatch < numberOfMatches)
+					{
+						currentMatch++;
+					}
+
+					for (int j = 0; j < numberOfMatches; j++)
+					{
+						matchIndexes[j] = matchIndexes[j] + difference;
+					}
 				}
 				else
 				{
-					currentDiff = currentMatch * difference;
+					int currentDiff;
+					if (currentMatch == 0)
+					{
+						currentDiff = 0;
+					}
+					else
+					{
+						currentDiff = currentMatch * difference;
+					}
+					replacedString[i] = m_string[i - currentDiff];
 				}
-				replacedString[i] = m_string[i - currentDiff];
+
 			}
-
+			return replacedString;
+			delete[] replacedString;
 		}
-
-		std::cout << replacedString << std::endl;
-		delete[] replacedString;
-		delete[] matchIndexes;
 	}
+
 
 
 }
