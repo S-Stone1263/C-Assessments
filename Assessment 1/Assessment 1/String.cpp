@@ -1,8 +1,6 @@
 #include "String.h"
 #include <iostream>
 
-//query error thrown by prepend when taking in the member of an object
-//query whether it is more appropriate to use references or pointers
 
 //constructors and Destructors
 
@@ -13,6 +11,7 @@ String::String()
 	char temp[15] = "Default String";
 	m_string = new char[strlen(temp) + 1];
 	strcpy_s(m_string, strlen(temp) + 1, temp);
+	m_numberOfMatches = 0;
 
 }
 
@@ -22,6 +21,7 @@ String::String(const char* c)
 	// dynamically allocating space for this object
 	m_string = new char[strlen(c) + 1]; // size of string in parameter plus one for null terminator
 	strcpy_s(m_string, strlen(c) + 1, c); //copy c char[] into member variable
+	m_numberOfMatches = 0;
 
 }
 
@@ -30,6 +30,7 @@ String::String(String& st)
 {
 	m_string = new char[(strlen(st.m_string) + 1)];
 	strcpy_s(m_string, strlen(st.m_string) + 1, st.m_string);
+	m_numberOfMatches = 0;
 
 }
 //destructor
@@ -48,6 +49,10 @@ void clearAndIgnore()
 	std::cin.ignore(std::cin.rdbuf()->in_avail());
 }
 
+int String::GetNumMatches()
+{
+	return m_numberOfMatches;
+}
 
 //getting the length of the stored string
 int String::Length()
@@ -224,7 +229,7 @@ const char* String::ToUpper()
 	{
 		int letter = 0;
 		letter = upper[i];
-		upper[i] = tolower(letter);
+		upper[i] = toupper(letter);
 
 	}
 	return upper;
@@ -233,223 +238,7 @@ const char* String::ToUpper()
 
 //creating a function to find if a particular string is contained within the stored member string
 
-void String::Find(const char* findstring)
-{
-	//creating a new array to store the positions of the matched string
-	int* matchIndexes;
-	matchIndexes = new int[1];
-	int numberOfMatches = 0;
-
-	for (int i = 0; i < strlen(m_string); i++) //starting a loop to check every letter of the member string against the first letter of the input string
-	{
-		if (m_string[i] == findstring[0]) //if a match is found it begins to check the circumstances of the match
-		{
-			if (strlen(findstring) > 1) //if the inputted string is larger than one character it enters the following loop to compare the subsequent characters in each string
-			{
-				for (int j = 1; j < strlen(findstring); j++)
-				{
-					if (findstring[j] != m_string[i + j])
-					{
-						j = strlen(findstring); //if not matching this breaks the loop
-					}
-					if (j == (strlen(findstring) - 1)) //if all characters match, it will enter the following to store the position
-					{
-						if (numberOfMatches == 0) //for the first match it simply creates the array of appropriate size and stores the current position in it
-						{
-							numberOfMatches++;
-							matchIndexes = new int[numberOfMatches + 1];
-							matchIndexes[numberOfMatches - 1] = i;
-						}
-						else //for subsequent matches, a temporary array is used to store the current values, so that the original array can be appropriately resized and then store all current values
-						{
-							numberOfMatches++;
-							int* temp = new int[numberOfMatches + 1];
-							for (int i = 0; i < numberOfMatches - 1; i++)
-							{
-								temp[i] = matchIndexes[i];
-							}
-
-							delete[] matchIndexes;
-							matchIndexes = new int[numberOfMatches];
-
-							for (int i = 0; i < numberOfMatches; i++)
-							{
-								matchIndexes[i] = temp[i];
-							}
-							delete[] temp;
-						}
-					}
-				}
-			}
-			else //if the input is only one character it only checks the one character and then operates the same as before for storage of the index
-			{
-				if (numberOfMatches == 0)
-				{
-					numberOfMatches++;
-					matchIndexes = new int[numberOfMatches];
-					matchIndexes[numberOfMatches - 1] = i;
-				}
-				else
-				{
-					numberOfMatches++;
-					int* temp = new int[numberOfMatches];
-
-					for (int i = 0; i < numberOfMatches - 1; i++)
-					{
-						temp[i] = matchIndexes[i];
-					}
-
-					temp[numberOfMatches - 1] = i;
-
-					delete[] matchIndexes;
-					matchIndexes = new int[numberOfMatches];
-
-					for (int i = 0; i < numberOfMatches; i++)
-					{
-						matchIndexes[i] = temp[i];
-					}
-					delete[] temp;
-				}
-			}
-
-
-
-		}
-	}
-
-	//printing to the console the positions of the matches if there are any
-	if (numberOfMatches > 0)
-	{
-		if (numberOfMatches == 1)
-		{
-			std::cout << "The start of the match is at index position " << matchIndexes[0] << std::endl;
-		}
-		else
-		{
-			std::cout << "The start of the matches are at ";
-			for (int i = 0; i < numberOfMatches; i++)
-			{
-				std::cout << matchIndexes[i] << " | ";
-			}
-		}
-	}
-	else
-	{
-		std::cout << "There are no matches";
-	}
-
-	delete[] matchIndexes;
-}
-
-//operates exactly as the function above however the loop begins from the index 
-void String::Find(const char* findstring, int index)
-{
-	int* matchIndexes;
-	matchIndexes = new int[1];
-	int numberOfMatches = 0;
-	for (int i = index; i < strlen(m_string); i++)
-	{
-		if (m_string[i] == findstring[0])
-		{
-			if (strlen(findstring) > 1)
-			{
-				for (int j = 1; j < strlen(findstring); j++)
-				{
-					if (findstring[j] != m_string[i + j])
-					{
-						j = strlen(findstring);
-					}
-					if (j == (strlen(findstring) - 1))
-					{
-						if (numberOfMatches == 0)
-						{
-							numberOfMatches++;
-							matchIndexes = new int[numberOfMatches + 1];
-							matchIndexes[numberOfMatches - 1] = i;
-						}
-						else
-						{
-							numberOfMatches++;
-							int* temp = new int[numberOfMatches + 1];
-							for (int i = 0; i < numberOfMatches - 1; i++)
-							{
-								temp[i] = matchIndexes[i];
-							}
-
-							delete[] matchIndexes;
-							matchIndexes = new int[numberOfMatches];
-
-							for (int i = 0; i < numberOfMatches; i++)
-							{
-								matchIndexes[i] = temp[i];
-							}
-							delete[] temp;
-						}
-					}
-				}
-			}
-			else
-			{
-				if (numberOfMatches == 0)
-				{
-					numberOfMatches++;
-					matchIndexes = new int[numberOfMatches];
-					matchIndexes[numberOfMatches - 1] = i;
-				}
-				else
-				{
-					numberOfMatches++;
-					int* temp = new int[numberOfMatches];
-
-					for (int i = 0; i < numberOfMatches - 1; i++)
-					{
-						temp[i] = matchIndexes[i];
-					}
-
-					temp[numberOfMatches - 1] = i;
-
-					delete[] matchIndexes;
-					matchIndexes = new int[numberOfMatches];
-
-					for (int i = 0; i < numberOfMatches; i++)
-					{
-						matchIndexes[i] = temp[i];
-					}
-					delete[] temp;
-				}
-			}
-
-
-
-		}
-	}
-
-	if (numberOfMatches > 0)
-	{
-		if (numberOfMatches == 1)
-		{
-			std::cout << "The start of the match is at index position " << matchIndexes[0] << std::endl;
-		}
-		else
-		{
-			std::cout << "The start of the matches are at ";
-			for (int i = 0; i < numberOfMatches; i++)
-			{
-				std::cout << matchIndexes[i] << " | ";
-			}
-		}
-	}
-	else
-	{
-		std::cout << "There are no matches";
-	}
-
-	delete[] matchIndexes;
-}
-
-//exactly the same as the first original find function except after storing the variables the function continues
-
-char* String::Find(const char* findstring, const char* replacestring)
+int* String::Find(const char* findstring)
 {
 	//creating a new array to store the positions of the matched string
 	int* matchIndexes;
@@ -533,43 +322,225 @@ char* String::Find(const char* findstring, const char* replacestring)
 
 		}
 	}
+	m_numberOfMatches = numberOfMatches;
+	return matchIndexes;
 
-	if (matchIndexes[0] != -1)
+
+	delete[] matchIndexes;
+}
+
+//operates exactly as the function above however the loop begins from the index 
+int* String::Find(const char* findstring, int index)
+{
+	int* matchIndexes;
+	matchIndexes = new int[1];
+	matchIndexes[0] = -1;
+	int numberOfMatches = 0;
+	for (int i = index; i < strlen(m_string); i++)
 	{
-		//loops throgh the matches index to find the position at which a character needs replacing
-		int difference;
-
-		if (strcmp(findstring, m_string) == 0)
+		if (m_string[i] == findstring[0])
 		{
-			char* replacedString = new char[strlen(replacestring) + 1];
-			strcpy_s(replacedString, strlen(replacestring) + 1, replacestring);
+			if (strlen(findstring) > 1)
+			{
+				for (int j = 1; j < strlen(findstring); j++)
+				{
+					if (findstring[j] != m_string[i + j])
+					{
+						j = strlen(findstring);
+					}
+					if (j == (strlen(findstring) - 1))
+					{
+						if (numberOfMatches == 0)
+						{
+							numberOfMatches++;
+							matchIndexes = new int[numberOfMatches + 1];
+							matchIndexes[numberOfMatches - 1] = i;
+						}
+						else
+						{
+							numberOfMatches++;
+							int* temp = new int[numberOfMatches + 1];
+							for (int i = 0; i < numberOfMatches - 1; i++)
+							{
+								temp[i] = matchIndexes[i];
+							}
+
+							delete[] matchIndexes;
+							matchIndexes = new int[numberOfMatches];
+
+							for (int i = 0; i < numberOfMatches; i++)
+							{
+								matchIndexes[i] = temp[i];
+							}
+							delete[] temp;
+						}
+					}
+				}
+			}
+			else
+			{
+				if (numberOfMatches == 0)
+				{
+					numberOfMatches++;
+					matchIndexes = new int[numberOfMatches];
+					matchIndexes[numberOfMatches - 1] = i;
+				}
+				else
+				{
+					numberOfMatches++;
+					int* temp = new int[numberOfMatches];
+
+					for (int i = 0; i < numberOfMatches - 1; i++)
+					{
+						temp[i] = matchIndexes[i];
+					}
+
+					temp[numberOfMatches - 1] = i;
+
+					delete[] matchIndexes;
+					matchIndexes = new int[numberOfMatches];
+
+					for (int i = 0; i < numberOfMatches; i++)
+					{
+						matchIndexes[i] = temp[i];
+					}
+					delete[] temp;
+				}
+			}
+
+
+
+		}
+	}
+	m_numberOfMatches = numberOfMatches;
+	return matchIndexes;
+
+	delete[] matchIndexes;
+}
+
+//exactly the same as the first original find function except after storing the variables the function continues
+
+char* String::Find(const char* findstring, const char* replacestring)
+{
+	int* matchIndexes;
+	matchIndexes = new int[1];
+	matchIndexes[0] = -1;
+	int numberOfMatches = 0;
+	char* failReturn = new char[2];
+	failReturn[0] = '-1';
+
+	for (int i = 0; i < strlen(m_string); i++)
+	{
+		if (m_string[i] == findstring[0])
+		{
+			if (strlen(findstring) > 1)
+			{
+				for (int j = 1; j < strlen(findstring); j++)
+				{
+					if (findstring[j] != m_string[i + j])
+					{
+						j = strlen(findstring);
+					}
+					if (j == (strlen(findstring) - 1))
+					{
+						if (numberOfMatches == 0)
+						{
+							numberOfMatches++;
+							matchIndexes = new int[numberOfMatches + 1];
+							matchIndexes[numberOfMatches - 1] = i;
+						}
+						else
+						{
+							numberOfMatches++;
+							int* temp = new int[numberOfMatches + 1];
+							for (int i = 0; i < numberOfMatches - 1; i++)
+							{
+								temp[i] = matchIndexes[i];
+							}
+
+							delete[] matchIndexes;
+							matchIndexes = new int[numberOfMatches];
+
+							for (int i = 0; i < numberOfMatches; i++)
+							{
+								matchIndexes[i] = temp[i];
+							}
+							delete[] temp;
+						}
+					}
+				}
+			}
+			else
+			{
+				if (numberOfMatches == 0)
+				{
+					numberOfMatches++;
+					matchIndexes = new int[numberOfMatches];
+					matchIndexes[numberOfMatches - 1] = i;
+				}
+				else
+				{
+					numberOfMatches++;
+					int* temp = new int[numberOfMatches];
+
+					for (int i = 0; i < numberOfMatches - 1; i++)
+					{
+						temp[i] = matchIndexes[i];
+					}
+
+					temp[numberOfMatches - 1] = i;
+
+					delete[] matchIndexes;
+					matchIndexes = new int[numberOfMatches];
+
+					for (int i = 0; i < numberOfMatches; i++)
+					{
+						matchIndexes[i] = temp[i];
+					}
+					delete[] temp;
+				}
+			}
+
+
+
+		}
+	}
+
+	if (matchIndexes[0] != -1) //checking if there are any matches of the string to find within the member string
+	{
+		int difference; //creating a variable to store the difference in size between find and replace strings
+
+		if (strcmp(findstring, m_string) == 0) //Testing to see if the string to find is the entirety of the string
+		{
+			char* replacedString = new char[strlen(replacestring) + 1]; //initialise new array of appropriate size
+			strcpy_s(replacedString, strlen(replacestring) + 1, replacestring); //copy the replacestring and return it
 			return replacedString;
 		}
 
-		else if (strlen(replacestring) > strlen(findstring))
+		else if (strlen(replacestring) > strlen(findstring)) // enter this section if the replacement string is longer than the string found
 		{
-			difference = (strlen(replacestring) - strlen(findstring));
+			difference = (strlen(replacestring) - strlen(findstring)); //setting the difference to use throughout this code
 			char* replacedString = new char[strlen(m_string) + (numberOfMatches * difference) + 1];
-			int currentMatch = 0;
+			int currentMatch = 0; //Setting what match from the indexes was previously replaced
 
-			for (int i = 0; i < strlen(m_string) + (numberOfMatches * difference) + 1; i++)
+			for (int i = 0; i < strlen(m_string) + (numberOfMatches * difference) + 1; i++) //entering a for loop to fill the dynamically allocated array
 			{
-				if (i == matchIndexes[currentMatch])
+				if (i == matchIndexes[currentMatch]) //checking if the current index is where the find string was found
 				{
-					for (int j = 0; j < strlen(replacestring); j++)
+					for (int j = 0; j < strlen(replacestring); j++) //looping through the length of the replace string to fill the array
 					{
 						replacedString[i + j] = replacestring[j];
 					}
 
-					i = i + difference + (strlen(findstring) - 1);
+					i = i + difference + (strlen(findstring) - 1); //skipping through the index to avoid overwriting the previous filled data
 					if (currentMatch < numberOfMatches)
 					{
-						currentMatch++;
+						currentMatch++; //setting the current match to one as one has now been replaced
 					}
 
 					for (int j = 0; j < numberOfMatches; j++)
 					{
-						matchIndexes[j] = matchIndexes[j] + difference;
+						matchIndexes[j] = matchIndexes[j] + difference; //changing the position of where the index will be found as the current array is now larger than the original
 					}
 				}
 				else
@@ -590,13 +561,13 @@ char* String::Find(const char* findstring, const char* replacestring)
 			return replacedString;
 			delete[] replacedString;
 		}
-		else if (strlen(replacestring) < strlen(findstring))
+		else if (strlen(replacestring) < strlen(findstring)) //enter this if the replacestring is shorter than the findstring
 		{
 			difference = (strlen(findstring) - strlen(replacestring));
 			char* replacedString = new char[strlen(m_string) - (numberOfMatches * difference) + 1];
-			replacedString[strlen(m_string) - (numberOfMatches * difference)] = '\0';
+			replacedString[strlen(m_string) - (numberOfMatches * difference)] = '\0'; //setting the last character to the NULL TERMINATOR
 			int currentMatch = 0;
-			for (int i = 0; i < strlen(m_string) - (numberOfMatches * difference); i++)
+			for (int i = 0; i < strlen(m_string) - (numberOfMatches * difference); i++) //filling the replaced string
 			{
 				replacedString[i] = '_';
 			}
@@ -607,10 +578,10 @@ char* String::Find(const char* findstring, const char* replacestring)
 				{
 					for (int j = 0; j < strlen(replacestring); j++)
 					{
-						replacedString[i + j] = replacestring[j];
+						replacedString[i + j] = replacestring[j]; //filling the dynamic array at the correct index with the entirety of the replace string
 					}
 					currentMatch++;
-					i = i + strlen(replacestring) - 1;
+					i = i + strlen(replacestring) - 1; //stepping through the index the correct amount to ensure no overwriting
 				}
 				else if (currentMatch == 0)
 				{
@@ -618,13 +589,13 @@ char* String::Find(const char* findstring, const char* replacestring)
 				}
 				else
 				{
-					replacedString[i] = m_string[i + (currentMatch * difference)];
+					replacedString[i] = m_string[i + (currentMatch * difference)]; //filling the array with the original string using the correct character from the original string as the i value changes every match
 				}
 			}
 			return replacedString;
 			delete[] replacedString;
 		}
-		else
+		else //enters this if the find string and replace string and operates the same as above except it doesnt have to step through the indexes as the arrays are the same size
 		{
 			difference = 0;
 			char* replacedString = new char[strlen(m_string) + 1];
@@ -672,32 +643,37 @@ char* String::Find(const char* findstring, const char* replacestring)
 			}
 			return replacedString;
 			delete[] replacedString;
+			delete[] matchIndexes;
 		}
+	}
+	else
+	{
+		return failReturn;
 	}
 
 
 
 }
 
-//reads an input from the console and stores it in an appropriately sized array
+//reads an input from the console and stores it in m_string
 const char* String::ReadFromConsole()
 {
-
+	//initialising variables to have a secure input
 	int numberOfWords;
 	int inputCheck;
 	bool flag = true;
 
 
-	while (flag)
+	while (flag) //using a boolean to keep looping through until the condition is satisfied
 	{
-		std::cout << "How many words is your string?" << std::endl;
-		std::cin >> inputCheck;
+		std::cout << "How many words is your string?" << std::endl; //asking the user for how many words their string is
+		std::cin >> inputCheck; //input storage while the check for validity runs
 
-		if (std::cin.fail() || inputCheck < 0)
+		if (std::cin.fail() || inputCheck < 0) //checking if the input is an integer and is above 0
 		{
-			clearAndIgnore();
+			clearAndIgnore(); //clears the read buffer and then ignores the error to continue the input loop
 		}
-		else
+		else //if the input is valid the number of words is set to the input check and the loop is broken by changing the boolean
 		{
 			numberOfWords = inputCheck;
 			flag = false;
@@ -707,13 +683,17 @@ const char* String::ReadFromConsole()
 
 
 
-	for (int i = 0; i < numberOfWords; i++)
+	for (int i = 0; i < numberOfWords; i++) //starts a loop for the number of words the user wishes to input
 	{
 		if (i == 0)
 		{
-			char temp[50];
+			char temp[50]; //setting a temporary array to store the input in
+
+			//prompting the user and taking in the input
 			std::cout << "Enter the first word of the string" << std::endl;
 			std::cin >> temp;
+
+			//deleting the current member string and replacing it with the first word of the new string
 			delete[] m_string;
 			m_string = new char[strlen(temp) + 2];
 			for (int i = 0; i < strlen(temp) + 1; i++)
@@ -721,9 +701,9 @@ const char* String::ReadFromConsole()
 				m_string[i] = temp[i];
 			}
 
-			strcat_s(m_string, strlen(temp) + 2, " ");
+			strcat_s(m_string, strlen(temp) + 2, " "); //adding a space at the end of the word as inputs cannot read whitespace
 		}
-		else if (i == numberOfWords - 1)
+		else if (i == numberOfWords - 1) //Storing the last word of the string
 		{
 			char temp[50];
 			std::cout << "Enter the last word of the string" << std::endl;
@@ -735,7 +715,9 @@ const char* String::ReadFromConsole()
 			{
 				stringHold[i] = temp[i];
 			}
+			//does not add a space at the end as it would be wasted space
 
+			//creating a variable to hold the member variable so that it can be resized to hold the new word to be concatenated onto it
 			char* memberHold = new char[strlen(m_string) + 1];
 			strcpy_s(memberHold, strlen(m_string) + 1, m_string);
 
@@ -749,7 +731,7 @@ const char* String::ReadFromConsole()
 			delete[] memberHold;
 			delete[] stringHold;
 		}
-		else
+		else //storing the middle words of the string
 		{
 			char temp[50];
 			std::cout << "Enter the next word of the string" << std::endl;
@@ -790,7 +772,7 @@ void String::WriteToConsole()
 }
 
 
-bool String::operator==(String& other)
+bool String::operator==(String& other) //operator overloading that compares LHS to RHS using strcmp
 {
 	int result;
 	result = strcmp(m_string, other.m_string);
@@ -819,12 +801,12 @@ bool String::operator==(const char* other)
 }
 
 
-const char String::operator[](int n)
+const char String::operator[](int n) //returning the character at the nth index
 {
 	return m_string[n];
 }
 
-const char* String::operator=(String& other)
+const char* String::operator=(String& other) //setting LHS equal to RHS using strcpy_s
 {
 	delete[] m_string;
 	m_string = new char[strlen(other.m_string) + 1];
@@ -842,7 +824,7 @@ const char* String::operator=(const char* other)
 	return m_string;
 }
 
-bool String::operator<(String& other)
+bool String::operator<(String& other) //returning true or false whether the string comes before or after the other string alphabetically
 {
 	if (strcmp(m_string, other.m_string) == -1)
 	{
@@ -853,3 +835,5 @@ bool String::operator<(String& other)
 		return false;
 	}
 }
+
+

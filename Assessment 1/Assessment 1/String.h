@@ -7,11 +7,16 @@ private:
 	//declaring a character pointer
 	char* m_string;
 
+	//using this to store the number of matches from the find function for use in main file
+	int m_numberOfMatches;
+
 public:
 	String();
 	String(const char* c);
 	String(String& st);
 	~String();
+
+	int GetNumMatches();
 
 	int Length();
 
@@ -31,8 +36,8 @@ public:
 	const char* ToLower();
 	const char* ToUpper();
 
-	void Find(const char* findstring);
-	void Find(const char* findstring, int index);
+	int* Find(const char* findstring);
+	int* Find(const char* findstring, int index);
 	char* Find(const char* findstring, const char* replacestring);
 
 	const char* ReadFromConsole();
@@ -51,4 +56,3 @@ public:
 
 
 };
-
