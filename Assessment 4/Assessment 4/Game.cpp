@@ -4,11 +4,15 @@
 #include "Player.h"
 #include "Rooms.h"
 #include "Gun.h"
+#include "Sword.h"
+#include "Knife.h"
 
 void clearAndIgnore();
 
 Game::Game()
 {
+	running = true;
+
 	for (int i = 0; i < 11; i++)
 	{
 		for (int j = 0; j < 11; j++)
@@ -29,6 +33,11 @@ Game::~Game()
 {
 }
 
+bool Game::RunningStatus()
+{
+	return running;
+}
+
 void Game::Run()
 {
 	String Gun1("Gun");
@@ -36,6 +45,11 @@ void Game::Run()
 	String LightningBolt("Lightning Bolt");
 	String Teleport("Teleport");
 	String Heal("Heal");
+	String Sword1("Sword");
+	String Knife1("Knife");
+	String Key("Key");
+	Knife knife1;
+	Sword sword1;
 	Gun gun1;
 	int inspectOrUse = 0; //Using this variable so that if a place is inspected the it doesnt continue the loop and display the area information again
 	std::cout << "What would you like to do? ( move / use / inspect )" << std::endl; // add check spells and check inventory
@@ -72,14 +86,120 @@ void Game::Run()
 			std::cout << "There is nothing here to inspect" << std::endl;
 			break;
 		case 1:
-			std::cout << "There is a sword here" << std::endl;
-			break;
+			if (encounters[0] == 0)
+			{
+				bool solved = false;
+				std::cout << "The inscription reads | Here lies the sword of the last worthy king, cursed to stay in this stone until a person deemed worthy draws it from its resting place" << std::endl;
+				while (solved == false)
+				{
+					int answer = 0;
+					std::cout << "What would you like to do? ( pull the sword / use an item / cast a spell )" << std::endl;
+					clearAndIgnore();
+					m_command.ReadFromConsole();
+
+					switch (m_command.ToLower().CharacterAt(0))
+					{
+					case 'p':
+						std::cout << "You reach through the thorny vines your arm and torso getting shredded by the massive rose like thorns until your hand finds the handle of the sword. Getting a firm grip and pulling the sword slides like butter through the stone you manage to pull the sword free" << std::endl;
+						m_player.TakeDamage(10);
+						m_player.AddItem(Sword1);
+						sword1.Description();
+						inspectOrUse++;
+						solved = true;
+						std::cout << "You take 10 points of damage, you have " << m_player.GetHealth() << " hitpoints remaining" << std::endl;
+						break;
+					case 'u':
+						clearAndIgnore();
+						std::cout << "What item would you like to use" << std::endl;
+						m_player.PrintInventory();
+						m_command.ReadFromConsole();
+						if (m_command.ToLower().CharacterAt(0) == 'k')
+						{
+							if (m_player.SortAndFindItem(Knife1))
+							{
+								if (knife1.GetDurability() > 0)
+								{
+									knife1.Use();
+									std::cout << "Cutting the vines away, you expose the sword and are able to cleanly wrap your hand around the handle and pull the sword out of the stone like its sliding through butter" << std::endl;
+									m_player.AddItem(Sword1);
+									sword1.Description();
+									inspectOrUse++;
+									solved = true;
+								}
+								else
+								{
+									knife1.Description();
+								}
+
+							}
+							else
+							{
+								std::cout << "You dont have that item" << std::endl;
+							}
+
+						}
+						else
+						{
+							std::cout << "You get the feeling looking at the mass of vines that this will probably not be very effective. Try something else" << std::endl;
+						}
+						break;
+					case 'c':
+						clearAndIgnore();
+						std::cout << "What spell would you like to cast" << std::endl;
+						m_player.PrintSpells();
+						m_command.ReadFromConsole();
+						if (m_command.ToLower().CharacterAt(0) == 'f')
+						{
+							if (m_player.SortAndFindSpell(Fireball))
+							{
+								std::cout << "You focus on the fireball spell that you learnt from the scroll, imagining the hottest flames you can remember seeing. Opening your eyes and looking down at your hand you see a blue sphere of pure fire ready to be thrown. Throwing this at the vines causes them to violently erupt in flames" << std::endl;
+								std::cout << "Letting the flames die out, the vines have been completely burnt away, allowing you to be able to freely grab the handle of the sword, as you do it slides out of the solid stone like it was butter" << std::endl;
+								m_player.AddItem(Sword1);
+								sword1.Description();
+								inspectOrUse++;
+								solved = true;
+							}
+							else
+							{
+								std::cout << "You dont know how to cast that spell" << std::endl;
+							}
+						}
+						else
+						{
+							std::cout << "You get the feeling that casting that offensive type spell may damage the scroll" << std::endl;
+						}
+
+
+					}
+
+				}
+				break;
+				encounters[4] = 1;
+			}
+			else
+			{
+				std::cout << "There is nothing new to inspect here" << std::endl;
+				break;
+			}
 		case 2:
 			std::cout << "There is a bear here" << std::endl;
 			break;
 		case 3:
-			std::cout << "There is wreckage here" << std::endl;
-			break;
+			if (encounters[2] == 0)
+			{
+				std::cout << "In the smoldering wreckage of what once was a plane, you manage to find two things" << std::endl;
+				gun1.Description();
+				knife1.Description();
+				m_player.AddItem(Gun1);
+				m_player.AddItem(Knife1);
+				m_player.PrintInventory();
+				encounters[2]++;
+				break;
+			}
+			else
+			{
+				std::cout << "There is nothing new to inspect at the wreckage" << std::endl;
+			}
 
 
 		case 4:
@@ -142,13 +262,21 @@ void Game::Run()
 						{
 							if (m_player.SortAndFindItem(Gun1))
 							{
-								gun1.Use();
-								gun1.Description();
-								std::cout << "The lock sits there dangling, no longer locked, you pull the lock free and the gate swings open for you ready to absorb this next spell" << std::endl;
-								m_player.AddSpell(Heal);
-								m_player.PrintSpells();
-								inspectOrUse++;
-								solved = true;
+								if (gun1.GetAmmo() == 1)
+								{
+									gun1.Use();
+									gun1.Description();
+									std::cout << "The lock sits there dangling, no longer locked, you pull the lock free and the gate swings open for you ready to absorb this next spell" << std::endl;
+									m_player.AddSpell(Heal);
+									m_player.PrintSpells();
+									inspectOrUse++;
+									solved = true;
+								}
+								else
+								{
+									gun1.Description();
+								}
+
 							}
 							else
 							{
@@ -170,8 +298,20 @@ void Game::Run()
 						{
 							if (m_player.SortAndFindSpell(Teleport))
 							{
-
+								std::cout << "You focus on the teleport spell, trying your hardest to will yourself towards the scroll, wishing that the lock would dissapear and as you finish that thought the lock blinks out of existence and the door falls open" << std::endl;
+								m_player.AddSpell(Heal);
+								m_player.PrintSpells();
+								inspectOrUse++;
+								solved = true;
 							}
+							else
+							{
+								std::cout << "You dont know how to cast that spell" << std::endl;
+							}
+						}
+						else
+						{
+							std::cout << "You get the feeling that casting that offensive type spell may damage the scroll" << std::endl;
 						}
 
 
@@ -179,17 +319,20 @@ void Game::Run()
 
 				}
 				break;
+				encounters[4] = 1;
 			}
 			else
 			{
-				std::cout << "Youve been here before" << std::endl;
+				std::cout << "There is nothing new to inspect here" << std::endl;
 				break;
 			}
 
 
 
 		case 6:
-			std::cout << "There is a locked exit here" << std::endl;
+			if (m_player.SortAndFindItem(Key))
+				std::cout << "There is a locked exit here and you seem to remember finding a key after your battle with the bear. Inserting the key it seems to automatically drift from your hand and into the lock and turns opening the exit. As you take one step through the dark you immediately feel a sharp pain in the side of your neck before your vision fades..." << std::endl;
+			running = false;
 			break;
 		}
 		break;
@@ -210,7 +353,14 @@ void Game::Run()
 			std::cout << "There is a bear here" << std::endl;
 			break;
 		case 3:
-			std::cout << "There is wreckage here" << std::endl;
+			if (encounters[2] == 0)
+			{
+				std::cout << "As you apporoach you see the smoking wreckage of a plane, mostly burnt out, you assume this is how you ended up in this forest..." << std::endl;
+			}
+			else
+			{
+				std::cout << "You've come across this spot already, this is the wreckage of the plane where you found the knife and the gun" << std::endl;
+			}
 			break;
 		case 4:
 			if (encounters[3] == 0)

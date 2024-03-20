@@ -1,4 +1,3 @@
-
 #include "Gun.h"
 #include "iostream"
 
@@ -30,6 +29,11 @@ void Gun::Use()
 		std::cout << "You remember back to the moment when you fired the gun previously and it fell apart in your hands, using the gun is no longer an option, maybe you shouldn't have used the bullet..." << std::endl;
 	}
 
+}
+
+int Gun::GetAmmo()
+{
+	return m_ammo;
 }
 
 int Gun::GetDamage()

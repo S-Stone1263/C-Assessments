@@ -1,4 +1,3 @@
-
 #pragma once
 #include "Item.h"
 class Gun : public Item
@@ -10,6 +9,6 @@ public:
 	Gun();
 	void Description() override;
 	void Use() override;
+	int GetAmmo();
 	int GetDamage();
 };
-

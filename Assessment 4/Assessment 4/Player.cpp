@@ -1,3 +1,4 @@
+
 #include "Player.h"
 #include "iostream"
 #include "String.h"
@@ -145,7 +146,7 @@ void Player::AssignSpells(String* temp) //dev function while testing
 
 bool Player::SortAndFindSpell(String& spell)
 {
-	if (numInventory == 0)
+	if (numSpells == 0)
 	{
 		return false;
 	}
@@ -181,11 +182,13 @@ bool Player::SortAndFindSpell(String& spell)
 		bool lessThan = key < m_spells[middle].CharacterAt(0);
 		if (m_spells[middle].CharacterAt(0) == key)
 		{
+			std::cout << "true" << std::endl;
 			match = true;
 			return true;
 		}
 		else if (start == middle && m_spells[end].CharacterAt(0) != key || end == middle && m_spells[start].CharacterAt(0) != key)
 		{
+			std::cout << "false" << std::endl;
 			return false;
 			break;
 		}
@@ -306,4 +309,19 @@ bool Player::SortAndFindItem(String& item)
 	}
 
 
+}
+
+void Player::TakeDamage(int damage)
+{
+	m_health = m_health - damage;
+}
+
+void Player::Heal(int health)
+{
+	m_health = m_health + health;
+}
+
+int Player::GetHealth()
+{
+	return m_health;
 }

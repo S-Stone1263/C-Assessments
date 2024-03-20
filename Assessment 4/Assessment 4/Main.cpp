@@ -7,8 +7,7 @@
 int main()
 {
 	Game game;
-	while (true)
-
+	while (game.RunningStatus())
 	{
 		game.Run();
 	}

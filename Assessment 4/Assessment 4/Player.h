@@ -1,9 +1,9 @@
-
 #pragma once
 #include "String.h"
 class Player
 {
 private:
+	int m_health;
 	int m_posX;
 	int m_posY;
 	String* m_spells;
@@ -29,6 +29,8 @@ public:
 	void AddItem(String& newItem);
 	void PrintInventory();
 	bool SortAndFindItem(String& item);
+	void TakeDamage(int damage);
+	void Heal(int health);
+	int GetHealth();
 
 };
-
