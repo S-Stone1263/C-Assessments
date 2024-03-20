@@ -1,3 +1,4 @@
+
 #pragma once
 #include "String.h"
 class Player
@@ -22,9 +23,6 @@ public:
 	int GetY();
 	void AddSpell(String& newSpell);
 	void PrintSpells();
-	int GetNumSpells();
-	String* GetSpells();
-	void AssignSpells(String*);
 	bool SortAndFindSpell(String& spell);
 	void AddItem(String& newItem);
 	void PrintInventory();
@@ -34,3 +32,4 @@ public:
 	int GetHealth();
 
 };
+

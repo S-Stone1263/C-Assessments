@@ -1,3 +1,4 @@
+
 #pragma once
 #include "Item.h"
 class Knife : public Item
@@ -12,3 +13,4 @@ public:
 	int GetDurability();
 	int GetDamage();
 };
+

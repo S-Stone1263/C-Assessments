@@ -2,6 +2,8 @@
 
 Bear::Bear()
 {
+	m_health = 100;
+	m_damage = 20;
 }
 
 void Bear::TakeDamage(int damage)

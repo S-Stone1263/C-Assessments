@@ -1,4 +1,3 @@
-
 #pragma once
 #include "Item.h"
 class Sword : public Item
@@ -11,4 +10,3 @@ public:
 	void Use() override;
 	int GetDamage();
 };
-

@@ -1,4 +1,3 @@
-
 #include "Knife.h"
 #include <iostream>
 

@@ -51,7 +51,6 @@ String::~String()
 // clear and ignore invalid inputs
 void clearAndIgnore()
 {
-	std::cout << "Invalid input, try again" << std::endl;
 	std::cin.clear();
 	std::cin.ignore(std::cin.rdbuf()->in_avail());
 }
