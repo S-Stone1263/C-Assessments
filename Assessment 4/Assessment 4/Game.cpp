@@ -1,4 +1,3 @@
-
 #include "Game.h"
 #include "iostream"
 #include "Player.h"
@@ -6,6 +5,9 @@
 #include "Gun.h"
 #include "Sword.h"
 #include "Knife.h"
+#include "String.h"
+#include "Bear.h"
+#include <windows.h>
 
 void clearAndIgnore();
 
@@ -51,6 +53,7 @@ void Game::Run()
 	Knife knife1;
 	Sword sword1;
 	Gun gun1;
+	Bear bear;
 	int inspectOrUse = 0; //Using this variable so that if a place is inspected the it doesnt continue the loop and display the area information again
 	std::cout << "What would you like to do? ( move / use / inspect )" << std::endl; // add check spells and check inventory
 	clearAndIgnore();
@@ -166,7 +169,7 @@ void Game::Run()
 						}
 						else
 						{
-							std::cout << "You get the feeling that casting that offensive type spell may damage the scroll" << std::endl;
+							std::cout << "You get the feeling that casting that will have little effect on the mass of vines" << std::endl;
 						}
 
 
@@ -182,7 +185,114 @@ void Game::Run()
 				break;
 			}
 		case 2:
-			std::cout << "There is a bear here" << std::endl;
+			if (encounters[1] == 0)
+			{
+				std::cout << "You walk through the forest and start to notice the trees are thinning out and you can see a clearing ahead. Walking through you notice 2 things. Less noticeable, a shiny extravagant key sitting on the ground. But more importantly you see a massive brown bear already running in your direction!" << std::endl;
+				while (bear.GetHealth() > 0 && m_player.GetHealth() > 0)
+				{
+					std::cout << "What would you like to do? ( use item / cast spell )" << std::endl;
+					clearAndIgnore();
+					m_command.ReadFromConsole();
+					switch (m_command.ToLower().CharacterAt(0))
+					{
+					case 'u':
+						std::cout << "What item would you like to use?" << std::endl;
+						clearAndIgnore();
+						m_command.ReadFromConsole();
+						switch (m_command.ToLower().CharacterAt(0))
+						{
+						case 'g':
+							if (m_player.SortAndFindItem(Gun1))
+							{
+								if (gun1.GetAmmo() == 1)
+								{
+									gun1.Use();
+									gun1.Description();
+									bear.TakeDamage(gun1.GetDamage());
+								}
+								else
+								{
+									gun1.Use();
+								}
+							}
+							else
+							{
+								std::cout << "You dont have that item" << std::endl;
+							}
+							break;
+
+						case 'k':
+							if (m_player.SortAndFindItem(Knife1))
+							{
+								if (knife1.GetDurability() < 0)
+								{
+									knife1.Use();
+									bear.TakeDamage(knife1.GetDamage());
+								}
+								else
+								{
+									knife1.Use();
+								}
+							}
+							else
+							{
+								std::cout << "You dont have that item" << std::endl;
+							}
+							break;
+						case 's':
+							if (m_player.SortAndFindItem(Sword1))
+							{
+								sword1.Use();
+								bear.TakeDamage(sword1.GetDamage());
+							}
+							else
+							{
+								std::cout << "You dont have that item" << std::endl;
+							}
+							break;
+						}
+						break;
+					case 'c':
+						std::cout << "What spell would you like to cast?" << std::endl;
+						clearAndIgnore();
+						m_command.ReadFromConsole();
+						switch (m_command.ToLower().CharacterAt(0))
+						{
+						case 'f':
+							std::cout << "You focus upon your palm, building up the energy coursing through your veins and condensing into a sphere. You throw the fireball at the bear and it explodes upon impact! However, it wasn't as effective as you thought it would be" << std::endl;
+							bear.TakeDamage(15);
+							break;
+						case 'l':
+							std::cout << "You begin to focus on spellcasting, not sure what to cast next. While making this decision a storm cloud begins forming above the bear. Condensing the energy in that stormcloud, you bring it all down on the bears head in a bright flash of lightning! Followed by a thunderous BOOM not a second later! The bear convulses upon the hit and takes a few seconds to recover" << std::endl;
+							bear.TakeDamage(35);
+							break;
+						case 't':
+							std::cout << "You begin to panic upon seeing this bear charging at you and all you can think about is how you want as much space as possible between this bear and you. In the instant that thought flows through your brain, you see the bear vanish from your sightline..." << std::endl;
+							Sleep(5);
+							std::cout << "You begin to hear a faint roaring sound, and the panic starts to set back in wondering where the bear is coming from, before you realise... its coming from... above???" << std::endl;
+							std::cout << "SPLAT" << std::endl;
+							std::cout << "About 20 metres away from where the bear dissapeared, you see the corpse or whats left of the bear, it is dead... very dead" << std::endl;
+							bear.TakeDamage(100);
+							break;
+						case 'h':
+							std::cout << "Focusing on the wounds you have sustained throughout this experience, some of them begin to close and heal, small wounds completely vanishing and the larger wounds look like theyve been healing for several weeks already" << std::endl;
+							if (m_player.GetHealth() > (100 - 15))
+							{
+								int healing;
+								healing = 100 - m_player.GetHealth();
+								m_player.Heal(healing);
+							}
+							else
+							{
+								m_player.Heal(15);
+							}
+
+
+						}
+					}
+				}
+			}
+
 			break;
 		case 3:
 			if (encounters[2] == 0)
@@ -247,6 +357,7 @@ void Game::Run()
 							m_player.PrintSpells();
 							inspectOrUse++;
 							solved = true;
+							encounters[4]++;
 						}
 						else
 						{
@@ -331,8 +442,14 @@ void Game::Run()
 
 		case 6:
 			if (m_player.SortAndFindItem(Key))
+			{
 				std::cout << "There is a locked exit here and you seem to remember finding a key after your battle with the bear. Inserting the key it seems to automatically drift from your hand and into the lock and turns opening the exit. As you take one step through the dark you immediately feel a sharp pain in the side of your neck before your vision fades..." << std::endl;
-			running = false;
+				running = false;
+			}
+			else
+			{
+				std::cout << "The door seems to be magically locked, the lock being somewhat in this realm and also not, when you go to touch it your hand passes through, but with all the magic coursing through your veins, you get the sense that a specific key will certainly unlock this" << std::endl;
+			}
 			break;
 		}
 		break;
