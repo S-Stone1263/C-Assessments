@@ -10,6 +10,7 @@ private:
 	Player m_player;
 	Rooms m_setup;
 	String m_command;
+	int encounters[6] = { 0,0,0,0,0,0 };
 public:
 	Game();
 	~Game();

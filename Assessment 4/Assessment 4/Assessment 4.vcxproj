@@ -130,17 +130,21 @@
     <ClInclude Include="Game.h" />
     <ClInclude Include="Gun.h" />
     <ClInclude Include="Item.h" />
+    <ClInclude Include="Knife.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="Rooms.h" />
     <ClInclude Include="String.h" />
+    <ClInclude Include="Sword.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="Gun.cpp" />
+    <ClCompile Include="Knife.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="Rooms.cpp" />
     <ClCompile Include="String.cpp" />
+    <ClCompile Include="Sword.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

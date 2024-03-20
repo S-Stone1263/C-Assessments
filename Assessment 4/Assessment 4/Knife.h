@@ -1,13 +1,13 @@
 
 #pragma once
 #include "Item.h"
-class Gun : public Item
+class Knife : public Item
 {
 private:
-	int m_ammo;
 	int m_damage;
+	int m_durability;
 public:
-	Gun();
+	Knife();
 	void Description() override;
 	void Use() override;
 	int GetDamage();

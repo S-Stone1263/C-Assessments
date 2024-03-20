@@ -1,3 +1,4 @@
+
 #include "Rooms.h"
 #include <chrono>
 #include <iostream>
@@ -86,3 +87,4 @@ int* Rooms::GetGateLocation()
 {
 	return gate;
 }
+

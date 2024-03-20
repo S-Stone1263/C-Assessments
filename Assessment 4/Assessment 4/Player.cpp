@@ -1,4 +1,3 @@
-
 #include "Player.h"
 #include "iostream"
 #include "String.h"
@@ -6,19 +5,21 @@
 Player::Player()
 {
 	String defaultSpell("No Spells");
+	String defaultInventory("No items");
 	m_posX = 6;
 	m_posY = 6;
 	numSpells = 0;
 	m_spells = new String[1];
 	m_spells[0] = defaultSpell;
 	m_inventory = new String[1];
+	m_inventory[0] = defaultInventory;
 	numInventory = 0;
 }
 
 Player::~Player()
 {
 	delete[] m_spells;
-	delete[] m_spells;
+	delete[] m_inventory;
 }
 
 void Player::North()
@@ -144,6 +145,11 @@ void Player::AssignSpells(String* temp) //dev function while testing
 
 bool Player::SortAndFindSpell(String& spell)
 {
+	if (numInventory == 0)
+	{
+		return false;
+	}
+
 	String* temp = new String[numSpells];
 	int currentTempSpell = 0;
 	for (char j = 65; j < 91; j++)
@@ -175,13 +181,115 @@ bool Player::SortAndFindSpell(String& spell)
 		bool lessThan = key < m_spells[middle].CharacterAt(0);
 		if (m_spells[middle].CharacterAt(0) == key)
 		{
-			std::cout << "You know that spell!" << std::endl;
 			match = true;
 			return true;
 		}
 		else if (start == middle && m_spells[end].CharacterAt(0) != key || end == middle && m_spells[start].CharacterAt(0) != key)
 		{
-			std::cout << "You dont know that spell" << std::endl;
+			return false;
+			break;
+		}
+		else if (lessThan == true)
+		{
+			end = middle - 1;
+		}
+		else if (lessThan == false)
+		{
+			start = middle + 1;
+		}
+
+
+	}
+
+
+}
+
+
+void Player::AddItem(String& newItem)
+{
+	if (numInventory == 0)
+	{
+		numInventory++;
+		delete[] m_inventory;
+		m_inventory = new String[numInventory];
+		m_inventory[0] = newItem;
+	}
+	else
+	{
+		String* temp = new String[numInventory];
+		for (int i = 0; i < numInventory; i++)
+		{
+			temp[i] = m_inventory[i];
+		}
+		delete[] m_inventory;
+		numInventory++;
+		m_inventory = new String[numInventory];
+
+		for (int i = 0; i < numInventory - 1; i++)
+		{
+			m_inventory[i] = temp[i];
+		}
+
+		delete[] temp;
+		m_inventory[numInventory - 1] = newItem;
+	}
+
+
+
+}
+
+void Player::PrintInventory()
+{
+	std::cout << "You have the following items:" << std::endl;
+	for (int i = 0; i < numInventory; i++)
+	{
+		std::cout << m_inventory[i].Cstr() << std::endl;
+	}
+}
+
+bool Player::SortAndFindItem(String& item)
+{
+	if (numInventory == 0)
+	{
+		return false;
+	}
+
+	String* temp = new String[numInventory];
+	int currentTempItem = 0;
+	for (char j = 65; j < 91; j++)
+	{
+		for (int i = 0; i < numInventory; i++)
+		{
+			if (m_inventory[i].CharacterAt(0) == j)
+			{
+				temp[currentTempItem] = m_inventory[i];
+				temp[currentTempItem].Cstr();
+				currentTempItem++;
+			}
+
+		}
+	}
+
+	m_inventory = temp;
+
+
+	char key = item.CharacterAt(0);
+	int start = 0;
+	int end = numInventory - 1;
+
+	bool match = false;
+
+	while (match == false)
+	{
+		int middle = (start + end) / 2;
+		bool lessThan = key < m_inventory[middle].CharacterAt(0);
+		if (m_inventory[middle].CharacterAt(0) == key)
+		{
+			match = true;
+			return true;
+		}
+		else if (start == middle && m_inventory[end].CharacterAt(0) != key || end == middle && m_inventory[start].CharacterAt(0) != key)
+		{
 			return false;
 			break;
 		}
